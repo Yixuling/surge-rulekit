@@ -6,3 +6,6 @@ Surge.conf
 
 # Claude Code 本地配置
 .claude/
+
+# Serena MCP 缓存
+.serena/
