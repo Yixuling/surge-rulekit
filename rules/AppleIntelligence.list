@@ -1,0 +1,23 @@
+# Apple Intelligence 规则
+# 说明：Apple Intelligence、Siri 和搜索相关服务
+# 来源：Apple 官方 https://support.apple.com/zh-cn/101555（已核对，6 条全覆盖、无遗漏）
+# 更新：2026-06-29
+
+# ===== Siri 与搜索服务 =====
+# 搜索服务：Siri/Spotlight/Lookup/Safari/News/信息/音乐（TCP 443）
+DOMAIN-SUFFIX, smoot.apple.com
+
+# Siri 与听写（TCP 443）
+DOMAIN, guzzoni.apple.com
+
+# ===== 私有云计算（Private Cloud Compute）=====
+# Cloudflare 节点（TCP 443）
+DOMAIN, apple-relay.cloudflare.com
+DOMAIN, cp4.cloudflare.com
+
+# Fastly 节点（TCP 443）
+DOMAIN, apple-relay.fastly-edge.com
+
+# ===== Apple 智能扩展 =====
+# Apple Intelligence 扩展功能（TCP 443）
+DOMAIN, apple-relay.apple.com

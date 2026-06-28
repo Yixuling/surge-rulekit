@@ -1,0 +1,14 @@
+# Apple 补充规则（自维护）
+# 说明：社区列表未覆盖、需走 Apple 代理组的域名
+# 注意：须在 AppStore/iCloud 直连规则之前引用，否则 gateway.icloud.com 会被 iCloud.list 抢成直连
+# 更新：2026-06-29
+
+# ===== 账户级 API =====
+DOMAIN, gateway.icloud.com
+
+# ===== AppleMedia.list 未含的 iTunes 媒体边缘域 =====
+DOMAIN, books.itunes.apple.com
+DOMAIN, np-edge.itunes.apple.com
+DOMAIN, uts-api.itunes.apple.com
+DOMAIN, hls-svod.itunes.apple.com
+DOMAIN, js-cdn.music.apple.com

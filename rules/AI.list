@@ -1,0 +1,46 @@
+# AI 服务规则
+# 说明：AI 服务相关域名，分流至 AI 代理组（主配置中须置于 Google 规则之前）
+# 来源：自维护，参考 blackmatrix7/ios_rule_script、v2fly/domain-list-community
+# 更新：2026-06-29
+
+# ===== Claude (Anthropic) =====
+DOMAIN-SUFFIX, anthropic.com
+DOMAIN-SUFFIX, claude.ai
+DOMAIN-SUFFIX, claude.com
+DOMAIN-SUFFIX, claudeusercontent.com
+# 以下 3 条来自社区列表（v2fly），归属未经 Anthropic 官方确认
+DOMAIN-SUFFIX, clau.de
+DOMAIN-SUFFIX, claudemcpclient.com
+DOMAIN-SUFFIX, claudemcpcontent.com
+
+# ===== OpenAI =====
+DOMAIN-SUFFIX, openai.com
+DOMAIN-SUFFIX, chatgpt.com
+DOMAIN-SUFFIX, oaistatic.com
+DOMAIN-SUFFIX, oaiusercontent.com
+DOMAIN-SUFFIX, openaiapi-site.azureedge.net
+DOMAIN-SUFFIX, chatgpt.livekit.cloud
+DOMAIN-SUFFIX, sora.com
+
+# ===== Google Gemini =====
+DOMAIN, aistudio.google.com
+DOMAIN, generativelanguage.googleapis.com
+DOMAIN, makersuite.google.com
+DOMAIN, ai.google.dev
+DOMAIN, alkalimakersuite-pa.clients6.google.com
+DOMAIN, proactivebackend-pa.googleapis.com
+DOMAIN-SUFFIX, gemini.google.com
+
+# ===== Grok (xAI) =====
+DOMAIN-SUFFIX, grok.com
+DOMAIN-SUFFIX, x.ai
+
+# ===== Perplexity =====
+DOMAIN-SUFFIX, perplexity.ai
+DOMAIN-SUFFIX, perplexity.com
+DOMAIN-SUFFIX, pplx.ai
+DOMAIN, pplx-res.cloudinary.com
+DOMAIN, ppl-ai-file-upload.s3.amazonaws.com
+
+# ===== OpenRouter =====
+DOMAIN-SUFFIX, openrouter.ai

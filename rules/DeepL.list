@@ -1,0 +1,9 @@
+# DeepL 翻译规则
+# 说明：DeepL 翻译服务相关域名（含旗下 Linguee）
+# 更新：2026-06-29
+
+# ===== DeepL =====
+DOMAIN-SUFFIX, deepl.com
+DOMAIN-SUFFIX, deepl.net
+DOMAIN-SUFFIX, linguee.com
+DOMAIN-SUFFIX, linguee.de
