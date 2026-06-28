@@ -1,0 +1,8 @@
+# macOS
+.DS_Store
+
+# 本地个人配置
+Surge.conf
+
+# Claude Code 本地配置
+.claude/
