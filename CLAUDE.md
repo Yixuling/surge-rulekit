@@ -34,7 +34,7 @@ bash scripts/build-icons.sh          # 重新生成 icons/ 下全部图标
 | `outline` | 填色 + 膨胀描边(X) |
 | `blue_apple` / `ai` / `telegram` | 专用合成 |
 
-统一经 `canvas()` 输出 144×144,用 `PNG32:` 强制 RGBA(否则纯色 logo 被优化成灰度而变灰)。尺寸按光学视觉重量归一,非像素包围盒。dashboard-icons 的 SVG 用 `style=` 着色,rsvg 渲染会丢色 → 这类必须用其 PNG。
+统一经 `canvas()` 输出 144×144,用 `PNG32:` 强制 RGBA(否则纯色 logo 被优化成灰度而变灰)。尺寸统一最长边 136(≈94% 填充,每边留 ~4px 安全边距);outline/grad_svg 因描边/膨胀外扩,映射表 size 已减去外扩量。dashboard-icons 的 SVG 用 `style=` 着色,rsvg 渲染会丢色 → 这类必须用其 PNG。
 
 ## 规则顺序依赖
 

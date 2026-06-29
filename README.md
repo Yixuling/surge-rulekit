@@ -25,7 +25,7 @@
 ## 特性
 
 - **自维护规则** — 补充 [blackmatrix7](https://github.com/blackmatrix7/ios_rule_script) 等社区规则未覆盖的部分（Apple Intelligence、AI 服务、浏览器等），来源可追溯、按服务拆分。
-- **双主题图标** — 15 个策略组图标，144×144 透明底，浅色 / 深色界面下均清晰，视觉大小归一。
+- **双主题图标** — 15 个策略组图标，144×144 透明底，浅色 / 深色界面下均清晰，logo 尺寸统一。
 - **即取即用** — 规则与图标均通过 `raw` URL 远程引用，配置里写一行即可。
 - **一键重建** — 图标由脚本从官方 logo 合成，新增服务后整套可复现重建。
 
@@ -71,7 +71,7 @@ AI = select, ..., icon-url = https://raw.githubusercontent.com/Yixuling/surge-ru
 - **纯黑 / 深色 logo** — 仅这类做上色，避免在深色界面隐没：Apple 双色蓝、X 白底 + 深色描边、GitHub 品牌紫、Speedtest 品牌蓝、DeepL 品牌蓝。
 - **抽象 / 自制** — AI 用渐变 sparkle（非品牌 logo），Arc & Dia 取官方 Arc 轮廓填珊瑚渐变。
 
-所有图标 144×144、透明底、无底盘，视觉重量按光学大小归一。
+所有图标 144×144、透明底、无底盘，logo 最长边统一 136（≈94% 填充，留少量安全边距）。
 
 ### 重建
 

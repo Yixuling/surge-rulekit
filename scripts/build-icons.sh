@@ -57,7 +57,7 @@ outline() { # name svg-white-url logo-color halo-color size disk
   magick m.png -alpha extract -morphology Dilate Disk:"$6" -background "$4" -alpha shape halo.png
   magick halo.png logo.png -gravity center -composite o.png; canvas o.png "$1"; }
 # Apple：双色蓝苹果（上浅蓝 #3A81D3 / 下深蓝 #306EC2 直接相接，无分割线）
-blue_apple() { curl -fsSL "$SI/apple/white" -o a.svg; rsvg-convert -h 120 a.svg -o aw.png
+blue_apple() { curl -fsSL "$SI/apple/white" -o a.svg; rsvg-convert -h 136 a.svg -o aw.png
   local W H mid; W=$(magick aw.png -format '%w' info:); H=$(magick aw.png -format '%h' info:); mid=$((H*60/100))
   magick -size "${W}x${mid}" xc:'#3A81D3' t.png
   magick -size "${W}x$((H-mid))" xc:'#306EC2' bt.png
@@ -76,7 +76,7 @@ ai() { cat > sp.svg <<'SVG'
 </svg>
 SVG
   rsvg-convert -h 320 sp.svg -o sp.png
-  magick sp.png -trim +repage -resize 140x140 -background none l.png; canvas l.png AI; }
+  magick sp.png -trim +repage -resize 136x136 -background none l.png; canvas l.png AI; }
 # Telegram：纯纸飞机（无圆底），Telegram 蓝
 telegram() { cat > tg.svg <<'SVG'
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -84,24 +84,25 @@ telegram() { cat > tg.svg <<'SVG'
 </svg>
 SVG
   rsvg-convert -h 320 tg.svg -o tg.png
-  magick tg.png -trim +repage -resize 124x124 -background none l.png
-  magick -size 144x144 xc:none l.png -gravity center -geometry -4+4 -composite -colorspace sRGB PNG32:"$out/Telegram.png"; }
-# 服务 -> 处理方式/源映射（out名即 Surge 组的图标文件名；尺寸按视觉重量归一）
-blue_apple                                                   # Apple 双色蓝苹果
-ai                                                           # AI      sparkle
-grad_svg  ArcDia    arc       116 "#FF7A4D" "#D6418F" 3      # ArcDia  官方 Arc + 珊瑚渐变（放大+描边加粗+提饱和）
-monocolor DeepL     "#1A73C7" deepl        112               # 染品牌蓝（去白发光）
-pngcolor  Disney    "#2F88E0" "$SH/disney-plus.png" 130      # 字标染中亮蓝（深浅都可见，留安全边距）
-monocolor GitHub    "#8957E5" github       110               # GitHub 亮紫
-flat_png  Google    "$DB/google.png"       116
-flat_png  JetBrains "$SH/jetbrains.png"    104           # 缩小到 Google/Netflix 一档（原生不动）
-flat_png  Netflix   "$DB/netflix.png"      116           # 适度放大补横向重量
-flat_png  PayPal    "$DB/paypal.png"       114
-outline   Twitter   "$SI/x/white" "#FFFFFF" "#2C2C2E" 114 6    # X 白 + 深描边（去圆，深色白实心，放大补重量）
-telegram                                                     # Telegram 纯纸飞机（去圆底）
-monocolor Speedtest "#1A5FD0" speedtest    118               # Speedtest 蓝（压深去电光，略缩）
-flat_png  WeChat    "$DB/wechat.png"       120
-flat_png  YouTube   "$SH/youtube.png"      110
+  magick tg.png -trim +repage -resize 136x136 -background none l.png; canvas l.png Telegram; }
+# 服务 -> 处理方式/源映射（out名即 Surge 组的图标文件名）
+# 尺寸：统一最长边 136（136/144≈94% 填充，每边留 ~4px 安全边距）；
+#   outline/grad_svg 因描边/膨胀外扩，size 已减去外扩量使最终最长边≈136。
+blue_apple                                                   # Apple 双色蓝苹果（rsvg -h 136）
+ai                                                           # AI      sparkle（resize 136）
+grad_svg  ArcDia    arc       130 "#FF7A4D" "#D6418F" 3      # ArcDia  官方 Arc + 珊瑚渐变（130 + dilate3*2 ≈ 136）
+monocolor DeepL     "#1A73C7" deepl        136
+pngcolor  Disney    "#2F88E0" "$SH/disney-plus.png" 136
+monocolor GitHub    "#8957E5" github       136
+flat_png  Google    "$DB/google.png"       136
+flat_png  JetBrains "$SH/jetbrains.png"    136
+flat_png  Netflix   "$DB/netflix.png"      136
+flat_png  PayPal    "$DB/paypal.png"       136
+outline   Twitter   "$SI/x/white" "#FFFFFF" "#2C2C2E" 124 6  # X 白 + 深描边（124 + disk6*2 = 136）
+telegram                                                     # Telegram 纯纸飞机（resize 136）
+monocolor Speedtest "#1A5FD0" speedtest    136
+flat_png  WeChat    "$DB/wechat.png"       136
+flat_png  YouTube   "$SH/youtube.png"      136
 
 # 预览拼图（明暗双主题，输出到临时位置）
 F="/System/Library/Fonts/Supplemental/Arial.ttf"
