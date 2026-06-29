@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目性质
 
-为 Surge 维护两类可公开远程引用的素材:`rules/`(分流规则 `.list`,补充 blackmatrix7 等社区列表)与 `icons/`(策略组图标 PNG,脚本从官方 logo 合成)。均通过 `raw.githubusercontent.com/Yixuling/surge-rulekit/main/...` 在用户 Surge 配置里引用。无 build / test / lint。
+为 Surge 维护三类可公开素材:`rules/`(分流规则 `.list`,补充 blackmatrix7 等社区列表)、`icons/`(策略组图标 PNG,脚本从官方 logo 合成),以及 `Surge.example.conf`(脱敏的完整主配置模板)。前两类通过 `raw.githubusercontent.com/Yixuling/surge-rulekit/main/...` 在用户 Surge 配置里引用。无 build / test / lint。
 
 ## 命令
 
@@ -36,11 +36,17 @@ bash scripts/build-icons.sh          # 重新生成 icons/ 下全部图标
 
 统一经 `canvas()` 输出 144×144,用 `PNG32:` 强制 RGBA(否则纯色 logo 被优化成灰度而变灰)。尺寸统一最长边 136(≈94% 填充,每边留 ~4px 安全边距);outline/grad_svg 因描边/膨胀外扩,映射表 size 已减去外扩量。dashboard-icons 的 SVG 用 `style=` 着色,rsvg 渲染会丢色 → 这类必须用其 PNG。
 
+## Surge.example.conf(脱敏主配置模板)
+
+由作者真实配置脱敏而来。核心是三层路由:L1 节点池(`select` 按地区正则筛原始节点)→ L2 Smart 引擎(`smart` 选路)→ L3 可见路由(`fallback` 多机场主备聚合)。订阅源支持「单一聚合订阅」/「各机场独立订阅」两种接入,上层均按策略组名引用、切换无需改动。
+
+**改它的脱敏铁律**:任何修改后必须零敏感残留——机场品牌名、私有订阅 / gist、MITM `ca-p12` / `ca-passphrase`、`http-api` 密码、私有直连域名,以及机场特有节点标识(如专线 `DIP`,模板占位为 `SPECIAL`)一律用占位,不得出现真值。改完 grep 复扫验证。
+
 ## 规则顺序依赖
 
 主配置 `[Rule]` 段的引用顺序影响命中(见各 `.list` 头部):`AI.list` 须在 Google 规则前;`AppleExtra.list` 须在 AppStore / iCloud 直连规则前。
 
 ## 约束
 
-- `Surge.conf`(本地个人配置,已 gitignore)绝不提交 / 打印。
+- `Surge.conf`(本地真实配置,已 gitignore)绝不提交 / 打印 / 读改;对外公开的是脱敏版 `Surge.example.conf`,两者勿混。
 - 提交信息用英文。

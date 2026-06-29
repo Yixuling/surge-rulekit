@@ -1,6 +1,6 @@
 <h1 align="center">surge-rulekit</h1>
 
-<p align="center">为 <a href="https://nssurge.com">Surge</a> 自维护的分流规则集与策略组图标，通过 <code>raw.githubusercontent.com</code> 远程引用，开箱即用。</p>
+<p align="center">为 <a href="https://nssurge.com">Surge</a> 自维护的分流规则、策略组图标与一份脱敏的完整主配置，全部通过 <code>raw.githubusercontent.com</code> 远程引用，开箱即用。</p>
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Yixuling/surge-rulekit/main/icons/Apple.png" width="42" alt="Apple">
@@ -20,18 +20,53 @@
   <img src="https://raw.githubusercontent.com/Yixuling/surge-rulekit/main/icons/YouTube.png" width="42" alt="YouTube">
 </p>
 
-本仓库收集两类可公开引用的素材：补充社区列表未覆盖部分的**分流规则**，以及一套风格统一、明暗主题自适应的**策略组图标**。全部通过 `raw` URL 引用，无需本地维护副本。
+<p align="center">
+  <a href="#完整配置示例">完整配置</a> ·
+  <a href="#单独引用">单独引用</a> ·
+  <a href="#规则集">规则集</a> ·
+  <a href="#策略组图标">图标</a>
+</p>
+
+本仓库提供三类可公开引用的素材：补充社区列表未覆盖部分的**分流规则**、一套明暗自适应的**策略组图标**，以及一份演示三层多机场架构的**脱敏主配置**。全部经 `raw` URL 引用，无需本地维护副本。
 
 ## 特性
 
+- **完整配置模板** — 脱敏的三层多机场聚合架构，替换几处占位即可套用，私密信息一律不入库。
 - **自维护规则** — 补充 [blackmatrix7](https://github.com/blackmatrix7/ios_rule_script) 等社区规则未覆盖的部分（Apple Intelligence、AI 服务、浏览器等），来源可追溯、按服务拆分。
 - **双主题图标** — 15 个策略组图标，144×144 透明底，浅色 / 深色界面下均清晰，logo 尺寸统一。
-- **即取即用** — 规则与图标均通过 `raw` URL 远程引用，配置里写一行即可。
 - **一键重建** — 图标由脚本从官方 logo 合成，新增服务后整套可复现重建。
 
-## 使用
+## 完整配置示例
 
-在 Surge 配置中通过 `raw` URL 引用。
+[`Surge.example.conf`](Surge.example.conf) 是一份脱敏的完整主配置（已移除订阅、证书、机场等全部私密信息），核心是一套 **三层多机场聚合架构**：同地区下多个机场互为主备，故障自动切换。
+
+| 层 | 类型 | 作用 |
+| --- | --- | --- |
+| **L1 节点池** | `select` | 从订阅源按地区正则筛出各机场的原始节点 |
+| **L2 Smart 引擎** | `smart` | 在各池上独立跑 Smart，按历史延迟 / 成功率选路 |
+| **L3 可见路由** | `fallback` | 聚合各机场同地区出口，主力优先、备用冷备，故障自动切换与回切 |
+
+配置已整合本仓库的规则与图标，并预置 DNS 防劫持、QUIC 阻断、防 IP 泄露等设置。
+
+下载后替换占位即用：
+
+```bash
+curl -O https://raw.githubusercontent.com/Yixuling/surge-rulekit/main/Surge.example.conf
+```
+
+> [!IMPORTANT]
+> 套用前替换文件顶部清单标注的 4 处占位：机场订阅链接、`http-api` 密码、机场节点正则与图标、`[MITM]` CA 证书（在 Surge 内自行生成安装，切勿写入公开配置）。
+
+订阅源支持两种接入方式，上层 L1 / L2 / L3 均按策略组名引用，切换时无需改动：
+
+- **单一聚合订阅** — 一个订阅含多机场节点，用 `policy-regex-filter` 按节点名切分。
+- **各机场独立订阅** — 每个机场各自一个 `policy-path`，再聚合作兜底。
+
+只有一个机场时，删除「备用机场」相关组即可。
+
+## 单独引用
+
+只取规则或图标时，在 Surge 配置中按 `raw` URL 引用单个文件。
 
 **规则**（`[Rule]` 段）：
 
@@ -92,6 +127,7 @@ bash scripts/build-icons.sh        # 输出到 icons/，并在临时目录生成
 
 | 路径 | 说明 |
 | --- | --- |
+| `Surge.example.conf` | 脱敏的完整主配置（三层多机场聚合架构） |
 | `rules/` | 分流规则（`RULE-SET`），按服务拆分 |
 | `icons/` | 策略组图标，PNG 144×144 |
 | `scripts/build-icons.sh` | 图标生成脚本（ImageMagick + librsvg） |
@@ -101,4 +137,4 @@ bash scripts/build-icons.sh        # 输出到 icons/，并在临时目录生成
 图标 logo 来源：[dashboard-icons](https://github.com/homarr-labs/dashboard-icons)、[selfh.st/icons](https://github.com/selfhst/icons)、[simple-icons](https://github.com/simple-icons/simple-icons)。
 
 > [!NOTE]
-> 本仓库只提供可公开引用的规则与图标，不含任何个人主配置。
+> 仓库提供的主配置为脱敏模板，不含任何订阅、证书或机场等私密信息；作者的真实配置不入库。
