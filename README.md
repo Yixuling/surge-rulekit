@@ -63,7 +63,7 @@ curl -O https://raw.githubusercontent.com/Yixuling/surge-rulekit/main/Surge.exam
 ```
 
 > [!IMPORTANT]
-> 套用前替换文件顶部清单标注的 4 处占位：机场订阅链接、`http-api` 密码、机场节点正则与图标、`[MITM]` CA 证书（在 Surge 内自行生成安装，切勿写入公开配置）。
+> 套用前替换文件顶部清单标注的 4 处占位：机场订阅链接、`http-api` 密码、机场节点正则（占位「机场A标识 / 机场B标识」，换成你节点名里的机场关键词）、`[MITM]` CA 证书（在 Surge 内自行生成安装，切勿写入公开配置）。
 
 订阅源支持两种接入方式，上层 L1 / L2 / L3 均按策略组名引用，切换时无需改动：
 
@@ -145,8 +145,14 @@ bash scripts/build-icons.sh        # 输出到 icons/，并在临时目录生成
 
 ## FAQ
 
+**加载后所有策略组都是空的？**
+方式 A 的 `policy-regex-filter` 占位（「机场A标识 / 机场B标识」）还没替换。它必须匹配你订阅里节点名中的机场关键词，筛不到节点时全链路为空且无报错。
+
 **只有一个机场怎么用？**
-删除所有「备用机场」相关组，L3 各 `fallback` 组只保留主力一项即可（或直接以 L2 的 smart 组作为出口）。
+删除所有「备用机场」相关组，L3 各 `fallback` 组只保留主力一项即可（或直接以 L2 的 smart 组作为出口）。机场缺某个地区的节点时同理：删除该地区的 L1/L2/L3 各行及 `📍 Regions` 中的对应引用。
+
+**没有专线 / 独享 IP 节点？**
+删除 `🚄 Static` 组时，务必同步删除各服务组行内的 `"🚄 Static"` 引用（共 15 处，查找替换即可），只删组会导致配置加载报错；同时去掉 L1 正则中的 `^(?!.*SPECIAL)` 前缀。
 
 **smart 策略组用不了？**
 Smart 是较新的策略组类型：Surge iOS 需订阅解锁，Surge Mac 5 免费可用（[官方说明](https://kb.nssurge.com/surge-knowledge-base/zh/guidelines/smart-group)）。不可用时把 L2 各组的 `smart` 改成 `url-test`，整体架构不变。
