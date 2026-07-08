@@ -155,7 +155,7 @@ bash scripts/build-icons.sh        # 输出到 icons/，并在临时目录生成
 删除 `🚄 Static` 组时，务必同步删除各服务组行内的 `"🚄 Static"` 引用（共 15 处，查找替换即可），只删组会导致配置加载报错；同时去掉 L1 正则中的 `^(?!.*SPECIAL)` 前缀。
 
 **smart 策略组用不了？**
-Smart 是较新的策略组类型：iOS 端属订阅解锁功能；Mac 端随 Surge Mac 5 许可附带，无需额外付费（[官方说明](https://kb.nssurge.com/surge-knowledge-base/zh/guidelines/smart-group)）。不可用时把 L2 各组的 `smart` 改成 `url-test`，整体架构不变。
+Smart 是较新的策略组类型（[官方说明](https://kb.nssurge.com/surge-knowledge-base/zh/guidelines/smart-group)）。不可用时把 L2 各组的 `smart` 改成 `url-test`，整体架构不变。
 
 **图标改了但 Surge 里没刷新？**
 Surge 会缓存 `icon-url`，给 URL 加版本参数强制刷新（如 `icons/AI.png?v=2`）。
