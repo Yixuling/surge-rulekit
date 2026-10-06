@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Claude Code PreToolUse 守卫：拦截对生成物的直接编辑（下次重新生成时手改会被静默覆盖）
-# 接线方式见 CLAUDE.md。退出码 2 = 阻止工具调用并把 stderr 交回给 Claude。
+# 接线方式见 CLAUDE.md（Claude Code 专属部分）。退出码 2 = 阻止工具调用并把 stderr 交回给 Claude。
 set -uo pipefail
 
 path=$(jq -r '.tool_input.file_path // empty')

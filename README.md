@@ -156,4 +156,4 @@ src/tests/            单元测试
 scripts/              图标生成脚本与 git hooks
 ```
 
-维护约定与架构决策见 [CLAUDE.md](CLAUDE.md)。
+维护约定与架构决策见 [AGENTS.md](AGENTS.md)。
