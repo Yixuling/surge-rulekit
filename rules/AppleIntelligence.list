@@ -1,0 +1,17 @@
+# Apple Intelligence 规则
+# 说明：Apple Intelligence、Siri 与搜索所需域名，均为 443 端口（私有云计算中继 TCP/UDP，其余 TCP）
+# 来源：Apple 官方 https://support.apple.com/zh-cn/101555，与文档逐条对应
+
+# ===== Siri 与搜索 =====
+# 搜索服务：Siri/Spotlight/Lookup/Safari/News/信息/音乐
+DOMAIN-SUFFIX, smoot.apple.com
+# Siri 与听写
+DOMAIN, guzzoni.apple.com
+
+# ===== 私有云计算（Private Cloud Compute）=====
+DOMAIN, apple-relay.cloudflare.com
+DOMAIN, cp4.cloudflare.com
+DOMAIN, apple-relay.fastly-edge.com
+
+# ===== Apple 智能扩展 =====
+DOMAIN, apple-relay.apple.com

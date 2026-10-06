@@ -1,0 +1,13 @@
+# Arc & Dia 规则
+# 说明：The Browser Company 浏览器（Arc + Dia）域名
+# 来源：自维护
+
+# ===== Arc =====
+DOMAIN-SUFFIX, arc.net
+
+# ===== Dia =====
+DOMAIN-SUFFIX, diabrowser.com
+DOMAIN-SUFFIX, diabrowser.engineering
+
+# ===== 母公司主域（账户/同步）=====
+DOMAIN-SUFFIX, thebrowser.company

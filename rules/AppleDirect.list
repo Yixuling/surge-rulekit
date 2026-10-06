@@ -1,0 +1,11 @@
+# App Store 直连补充规则
+# 说明：AppStore.list 仅含 apps/itunes 两条精确域名，购买 API 与安装包 CDN 子域漏匹配会落到 FINAL 走代理导致下载失败；解析结果为 17.x 国内接入点，直连最快；须在 AppleIntelligence/AppleExtra 代理规则之后引用
+# 来源：自维护
+
+# ===== 购买 / 下载鉴权 API =====
+DOMAIN, buy.itunes.apple.com
+DOMAIN-WILDCARD, p*-buy.itunes.apple.com
+
+# ===== 安装包下载 CDN（iOS / Mac App Store） =====
+DOMAIN, iosapps.itunes.apple.com
+DOMAIN, osxapps.itunes.apple.com
