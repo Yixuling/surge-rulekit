@@ -1,0 +1,10 @@
+.DS_Store
+
+# 渲染产物（bun run render）
+/dist/
+
+# 私有层：变量、片段、部署基准、维护笔记（备份在 1Password，见 bun run private:backup）
+/private/
+
+# Claude Code 本地配置
+/.claude/
