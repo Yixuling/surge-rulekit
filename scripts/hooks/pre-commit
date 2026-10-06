@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# 扫描全部暂存内容中的私有值。启用：bun run hooks
+exec bun "$(git rev-parse --show-toplevel)/src/cli/scan.ts" staged

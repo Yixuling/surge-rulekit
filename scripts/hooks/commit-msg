@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# 扫描提交信息中的私有值（pre-commit 运行时 message 还没写）。启用：bun run hooks
+exec bun "$(git rev-parse --show-toplevel)/src/cli/scan.ts" msg "$1"
