@@ -1,0 +1,13 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      # 用 private.example/ 渲染模板并检查顺序约束；surge-cli 语法校验只能在本地 deploy 时做
+      - run: bun test
