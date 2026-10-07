@@ -9,6 +9,6 @@
     "private:backup": "f=\"$TMPDIR/private.tar.gz\"; tar -czf \"$f\" --exclude .DS_Store private && { op document edit surge-rulekit-private \"$f\" || op document create \"$f\" --title surge-rulekit-private; }; s=$?; rm -f \"$f\"; exit $s",
     "private:restore": "test ! -e private || { echo \"private/ 已存在，先移走再恢复\" >&2; exit 1; }; op document get surge-rulekit-private | tar -xzf -",
     "icons": "bash scripts/build-icons.sh",
-    "hooks": "git config core.hooksPath scripts/hooks"
+    "hooks": "git config core.hooksPath scripts/hooks && mkdir -p .claude/skills && ln -sfn /Applications/Surge.app/Contents/Resources/Skills/surge .claude/skills/surge"
   }
 }

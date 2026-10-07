@@ -31,7 +31,7 @@ flowchart LR
 ## 特性
 
 - **模板与私有值分离**：公开模板可以直接给别人参考，敏感值永远不进仓库
-- **规则顺序检查**：`[Rule]` 段的先后依赖写成约束表，顺序被打乱时渲染直接报错
+- **规则顺序与引用检查**：`[Rule]` 段的先后依赖写成约束表，顺序被打乱时渲染直接报错；引用了未定义的策略或策略组同样报错，不必等 Surge 加载时才发现
 - **部署防覆盖**：部署前先校验语法，再比较 iCloud 里的配置有没有在 UI 或 iOS 上被改过，改过就停下并列出语义差异
 - **提交前防泄露**：pre-commit 与 commit-msg 两个 hook 用私有层的值扫描暂存内容和提交信息，命中即拒绝
 - **自维护规则集**：补社区规则没覆盖或更新滞后的域名，Apple Intelligence 那份与官方文档逐条对应
@@ -70,7 +70,7 @@ bun run deploy
 | `bun run deploy [--force]` | 渲染 → `surge-cli` 校验 → 漂移检查 → 写入 iCloud → 重载 |
 | `bun test` | 单元测试（含用 `private.example/` 完整渲染一遍模板） |
 | `bun run icons [名称...]` | 重建全部或指定图标，并输出明暗双主题预览图 |
-| `bun run hooks` | 启用 `scripts/hooks/` 里的提交扫描 |
+| `bun run hooks` | 启用 `scripts/hooks/` 里的提交扫描，并建立 Claude Code 的 Surge 技能软链 |
 | `bun run private:backup` / `private:restore` | 把 `private/` 打包存入 / 取回 1Password |
 
 ## 模板与私有层

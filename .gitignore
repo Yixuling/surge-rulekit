@@ -6,5 +6,6 @@
 # 私有层：变量、片段、部署基准、维护笔记（备份在 1Password，见 bun run private:backup）
 /private/
 
-# Claude Code 本地配置
-/.claude/
+# Claude Code：settings.json 入库共享；本地覆盖与技能软链（bun run hooks 建立）不入库
+/.claude/settings.local.json
+/.claude/skills/

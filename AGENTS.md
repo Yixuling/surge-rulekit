@@ -8,7 +8,7 @@ Surge 个人配置与规则库，用法与机制见 README。本文件只记维�
 - **`bun run deploy` 必须先征得用户同意**：它会改写 iCloud 里正在运行的 `Surge.conf`（Mac 与 iOS 共用）并重载
 - deploy 因漂移停下，说明 UI 或 iOS 上改过配置：先把要保留的部分回填进模板，再用 `--force`
 - 新增模板变量时，同步在 `private.example/` 里加示例值，否则 CI 失败。改过 `private/` 后执行 `bun run private:backup`（需要 `op` 已登录）
-- `rules/`、`icons/` 通过 raw URL 引用：推送后还要执行 `surge-cli external-resource update all` 才生效，漏了不报错，只会继续用旧版本
+- `rules/`、`icons/` 通过 raw URL 引用：推送后 Surge 按外部资源的 `update-interval`（默认 86400 秒）自动刷新，最多滞后 24 小时；要立即生效执行 `surge-cli external-resource update all`
 - `icons/*.png` 由 `scripts/build-icons.sh` 生成，勿手工出图。上游来源固定版本并按 `scripts/icons.lock` 校验 sha256，重建逐字节可复现：`git status` 里出现的图标就是像素真的变了。换来源或升级版本时用 `UPDATE_LOCK=1` 重新记录，再核对图标 diff
 - surge-cli 不在 PATH：`/Applications/Surge.app/Contents/Applications/surge-cli`
 
@@ -23,6 +23,8 @@ surge-cli 实测行为（官方文档没写）：`test-policy` 对订阅节点�
 ## 约束与决策
 
 - **规则顺序**：约束在 `src/order.ts`（`ORDER` 成对约束 + `FIRST_RULE_SET` 置顶规则集）。新增有顺序依赖的规则时，在 `ORDER` 里加一条 `[先, 后, 原因]` 并补测试
+- **策略引用**：`[Rule]` 用到的策略、策略组成员、`include-other-group` 引用的组都须已定义，render 时由 `src/references.ts` 检查（CI 与 fork 没有 surge-cli，不能只靠 deploy 时的校验）
+- **rules/ 格式由测试强制**：`src/tests/rules.test.ts` 检查三行头部、条目写法与尾部换行，并核对模板引用的本仓库 `rules/`、`icons/` 文件都存在
 - **策略组选择按组名记忆**：可见组（如 `🚄 Static`、服务组）改名后，引用它的组会丢失当前选择、退回第一项，改名前先告知
 - **候选项顺序**：手写候选项总排在 `include-other-group` 引入项之前，重复项自动去重
 - **服务组保持对称**：15 个服务组候选项写法一致，不按服务单独调默认出口（试过，因不对称撤回）。`🔰 Guard` 规则集停用中但保留备用
@@ -35,11 +37,11 @@ surge-cli 实测行为（官方文档没写）：`test-policy` 对订阅节点�
 
 ## 代码与风格
 
-- 源码：`src/template.ts` 渲染与产物头部、`src/order.ts` 顺序约束、`src/normalize.ts` 规范化与漂移判断、`src/private.ts` 私有层与扫描清单、`src/cli/` 命令入口、`src/tests/` 测试
+- 源码：`src/template.ts` 渲染与产物头部、`src/order.ts` 顺序约束、`src/references.ts` 策略引用检查、`src/normalize.ts` 规范化与漂移判断、`src/private.ts` 私有层与扫描清单、`src/cli/` 命令入口、`src/tests/` 测试
 - 模板等号按块（空行分隔）对齐，emoji 与中文按 2 列宽计；行内参数列（如 `icon-url`）也对齐
 - `scripts/` 运行在 macOS 自带 bash 3.2：变量后紧跟中文写 `${var}`，不用关联数组
 - 提交信息遵循 Conventional Commits，subject 用中文
 
 ## 换机器
 
-clone 后依次执行 `bun run private:restore` 和 `bun run hooks`。各代理工具自己的本地配置另见其专属文件（Claude Code 见 CLAUDE.md）。
+clone 后依次执行 `bun run private:restore` 和 `bun run hooks`（后者同时启用提交扫描 hook 与 Claude Code 的 Surge 技能软链）。各代理工具自己的配置另见其专属文件（Claude Code 见 CLAUDE.md）。

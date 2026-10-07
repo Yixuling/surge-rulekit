@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hooks/block-generated-edits.sh\""
+      }]
+    }]
+  }
+}
