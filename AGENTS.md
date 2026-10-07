@@ -22,7 +22,7 @@ surge-cli 实测行为（官方文档没写）：`test-policy` 对订阅节点�
 
 ## 约束与决策
 
-- **规则顺序**：约束在 `src/order.ts`（`ORDER` 成对约束 + `FIRST_RULE_SET` 置顶规则集）。新增有顺序依赖的规则时，在 `ORDER` 里加一条 `[先, 后, 原因]` 并补测试
+- **规则顺序**：约束在 `src/order.ts`（`ORDER` 成对约束 + `FIRST_RULE_SET` 置顶规则集 + `CATCH_ALL` 兜底规则集，所有非 DIRECT 的 RULE-SET 都须在兜底之前）。新增有顺序依赖的规则时，在 `ORDER` 里加一条 `[先, 后, 原因]` 并补测试
 - **策略引用**：`[Rule]` 用到的策略、策略组成员、`include-other-group` 引用的组都须已定义，render 时由 `src/references.ts` 检查（CI 与 fork 没有 surge-cli，不能只靠 deploy 时的校验）
 - **rules/ 格式由测试强制**：`src/tests/rules.test.ts` 检查三行头部、条目写法与尾部换行，并核对模板引用的本仓库 `rules/`、`icons/` 文件都存在
 - **策略组选择按组名记忆**：可见组（如 `🚄 Static`、服务组）改名后，引用它的组会丢失当前选择、退回第一项，改名前先告知
