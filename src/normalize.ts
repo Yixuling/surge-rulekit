@@ -6,7 +6,8 @@ export function splitFields(text: string): string[] {
   return (text.match(/("[^"]*"|[^,])+/g) ?? []).map((f) => f.trim().replace(/^"(.*)"$/, "$1").trim());
 }
 
-const isParam = (f: string) => /^[a-z0-9-]+\s*=/i.test(f);
+// 策略组行里 key = value 形式的参数（区别于成员）
+export const isParam = (f: string) => /^[a-z0-9-]+\s*=/i.test(f);
 
 function normalizeLine(section: string, line: string): string {
   const eq = line.indexOf("=");

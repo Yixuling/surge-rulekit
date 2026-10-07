@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { checkOrder } from "./order";
 import { loadPrivate, type PrivateLayer } from "./private";
+import { checkReferences } from "./references";
 
 export const ROOT = join(import.meta.dir, "..");
 export const DIST = join(ROOT, "dist", "Surge.conf");
@@ -53,5 +54,7 @@ export function build(privateDir = join(ROOT, "private")): string {
   const conf = GENERATED_HEADER + rendered.replace(/^(#.*\n)+\n*/, "\n");
   const problems = checkOrder(conf);
   if (problems.length) throw new Error(`规则顺序约束不满足（见 src/order.ts）：\n${problems.map((p) => `  - ${p}`).join("\n")}`);
+  const refs = checkReferences(conf);
+  if (refs.length) throw new Error(`引用了未定义的策略（见 src/references.ts）：\n${refs.map((p) => `  - ${p}`).join("\n")}`);
   return conf;
 }
