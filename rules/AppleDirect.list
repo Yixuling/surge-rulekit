@@ -1,6 +1,6 @@
-# App Store 直连补充规则
-# 说明：AppStore.list 仅含 apps/itunes 两条精确域名，购买 API 与安装包 CDN 子域漏匹配会落到 FINAL 走代理导致下载失败；解析结果为 17.x 国内接入点，直连最快；须在 AppleIntelligence/AppleExtra 代理规则之后引用
-# 来源：自维护
+# Apple 直连补充规则
+# 说明：社区列表没点名、会被 Global 的 apple.com 后缀送进代理的 Apple 域名。这些域名在国内都解析到金山云/阿里云/网宿等国内 CDN 或 17.x 接入点，直连更快也省机场流量；AppStore.list 仅含 apps/itunes 两条精确域名，购买与安装包子域漏匹配走代理会下载失败
+# 来源：自维护，解析链用国内 DoH 核对
 
 # ===== 购买 / 下载鉴权 API =====
 DOMAIN, buy.itunes.apple.com
@@ -9,3 +9,28 @@ DOMAIN-WILDCARD, p*-buy.itunes.apple.com
 # ===== 安装包下载 CDN（iOS / Mac App Store） =====
 DOMAIN, iosapps.itunes.apple.com
 DOMAIN, osxapps.itunes.apple.com
+
+# ===== 系统更新（目录与安装包，动辄数 GB） =====
+DOMAIN, mesu.apple.com
+DOMAIN, gdmf.apple.com
+DOMAIN, appldnld.apple.com
+DOMAIN, swcdn.apple.com
+DOMAIN, swdist.apple.com
+DOMAIN, swscan.apple.com
+DOMAIN, oscdn.apple.com
+
+# ===== 证书校验（影响 App 启动与签名验证延迟） =====
+DOMAIN, ocsp.apple.com
+DOMAIN, ocsp2.apple.com
+DOMAIN, valid.apple.com
+DOMAIN, crl.apple.com
+
+# ===== 商店与基础服务 API =====
+DOMAIN, amp-api.apps.apple.com
+DOMAIN, init.itunes.apple.com
+DOMAIN, play.itunes.apple.com
+DOMAIN, se.itunes.apple.com
+DOMAIN, bag.itunes.apple.com
+DOMAIN, xp.apple.com
+DOMAIN, configuration.apple.com
+DOMAIN, weather-data.apple.com

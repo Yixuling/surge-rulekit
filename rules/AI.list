@@ -1,5 +1,5 @@
 # AI 服务规则
-# 说明：AI 服务相关域名，分流至 AI 代理组（主配置中须置于 Google 规则之前）
+# 说明：AI 服务相关域名，分流至 AI 代理组（主配置中须置于 Google 与 Twitter 规则之前：Gemini 域名在 Google 列表内，grok.com 也在 Twitter 列表内）
 # 来源：自维护
 
 # ===== Claude (Anthropic) =====
