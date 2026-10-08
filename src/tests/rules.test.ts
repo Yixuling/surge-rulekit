@@ -30,6 +30,35 @@ test("每个规则集：三行头部、分组标题、条目写法、无重复�
   }
 });
 
+test("AI 规则精确覆盖 Anthropic 依赖，不用宽泛模式接管共享风控与遥测域", () => {
+  const text = readFileSync(join(RULES, "AI.list"), "utf8");
+  const entries = new Set(text.split("\n").filter((line) => line && !line.startsWith("#")));
+  for (const entry of [
+    "DOMAIN, anthropic.auth0.com",
+    "DOMAIN, anthropic-com.ghost.io",
+    "DOMAIN, servd-anthropic-website.b-cdn.net",
+    "DOMAIN, anthropic.com.cdn.cloudflare.net",
+    "DOMAIN, browser-intake-us5-datadoghq.com",
+    "DOMAIN, http-intake.logs.us5.datadoghq.com",
+    "IP-CIDR, 160.79.104.0/21",
+    "IP-CIDR6, 2607:6bc0::/32",
+  ]) {
+    expect(entries.has(entry), `AI.list 缺少 ${entry}`).toBe(true);
+  }
+  for (const entry of [
+    "DOMAIN-KEYWORD, sift",
+    "DOMAIN-KEYWORD, datadog",
+    "DOMAIN-SUFFIX, siftscience.com",
+    "DOMAIN-SUFFIX, statsigapi.net",
+    "DOMAIN-SUFFIX, sentry.io",
+    "DOMAIN-SUFFIX, datadoghq.com",
+  ]) {
+    expect(entries.has(entry), `AI.list 不应宽泛接管 ${entry}`).toBe(false);
+  }
+  const tpl = readFileSync(join(ROOT, "Surge.tpl.conf"), "utf8");
+  expect(tpl).toContain("rules/AI.list, AI, no-resolve, extended-matching");
+});
+
 test("模板引用的本仓库 rules/ 与 icons/ 文件都存在，rules/ 里没有模板不引用的文件", () => {
   const tpl = readFileSync(join(ROOT, "Surge.tpl.conf"), "utf8");
   const refs = [...tpl.matchAll(/surge-rulekit\/refs\/heads\/main\/((?:rules|icons)\/[^\s,]+)/g)].map((m) => m[1]!);

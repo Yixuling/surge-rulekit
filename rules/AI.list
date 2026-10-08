@@ -11,6 +11,20 @@ DOMAIN-SUFFIX, clau.de
 DOMAIN-SUFFIX, claudemcpclient.com
 DOMAIN-SUFFIX, claudemcpcontent.com
 
+# 登录与站点资源（精确匹配，避免把 Auth0、Bunny CDN、Cloudflare 整体送入 AI）
+DOMAIN, anthropic.auth0.com
+DOMAIN, anthropic-com.ghost.io
+DOMAIN, servd-anthropic-website.b-cdn.net
+DOMAIN, anthropic.com.cdn.cloudflare.net
+
+# Claude 网页与 Claude Code 日志上报（精确端点，避免把整个 Datadog 送入 AI）
+DOMAIN, browser-intake-us5-datadoghq.com
+DOMAIN, http-intake.logs.us5.datadoghq.com
+
+# Anthropic 自有网段（ARIN：AS399358）；父级 RULE-SET 统一使用 no-resolve
+IP-CIDR, 160.79.104.0/21
+IP-CIDR6, 2607:6bc0::/32
+
 # ===== OpenAI =====
 DOMAIN-SUFFIX, openai.com
 DOMAIN-SUFFIX, chatgpt.com
