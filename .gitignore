@@ -1,5 +1,8 @@
 .DS_Store
 
+# 依赖（bun install，目前只有编辑器用的 @types/bun）
+/node_modules/
+
 # 渲染产物（bun run render）
 /dist/
 

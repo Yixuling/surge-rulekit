@@ -10,5 +10,8 @@
     "private:restore": "test ! -e private || { echo \"private/ 已存在，先移走再恢复\" >&2; exit 1; }; op document get surge-rulekit-private | tar -xzf -",
     "icons": "bash scripts/build-icons.sh",
     "hooks": "git config core.hooksPath scripts/hooks && mkdir -p .claude/skills && ln -sfn /Applications/Surge.app/Contents/Resources/Skills/surge .claude/skills/surge"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.3"
   }
 }
