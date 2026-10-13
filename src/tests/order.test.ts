@@ -2,11 +2,11 @@ import { expect, test } from "bun:test";
 import { CATCH_ALL, checkOrder, ORDER, ruleIds } from "../order";
 
 const ORDERED = [
-  "WeChat.list", "AppleIntelligence.list", "AppleExtra.list", "AppStore.list", "iCloud.list", "AppleDev.list", "TestFlight.list",
+  "WeChat.list", "AppleIntelligence.list", "AppleExtra.list", "AppStore.list", "AppleDirect.list", "iCloud.list", "AppleDev.list", "TestFlight.list",
   "AppleMedia.list", "17.0.0.0/8", "AI.list", "YouTube.list", "Google.list", "Twitter.list", "Global_All_No_Resolve.list",
   "China_All_No_Resolve.list", "LAN", "ASN.China.list",
 ];
-const DIRECT = new Set(["AppStore.list", "iCloud.list", "China_All_No_Resolve.list", "ASN.China.list"]);
+const DIRECT = new Set(["AppStore.list", "AppleDirect.list", "iCloud.list", "Local.list", "China_All_No_Resolve.list", "ASN.China.list"]);
 const line = (id: string) =>
   id === "LAN" ? "RULE-SET, LAN, DIRECT"
   : id.includes("/") ? `IP-CIDR, ${id}, DIRECT, no-resolve`
@@ -45,7 +45,10 @@ test("非直连规则集排在兜底规则集之后会被发现，直连规则�
     return rest;
   };
   expect(checkOrder(conf(after("Twitter.list")))).toContain(`Twitter.list 须在 ${catchAll} 之前：${why}`);
-  expect(checkOrder(conf(after("iCloud.list"))).filter((p) => p.includes(catchAll))).toEqual([]);
+  // 未受 ORDER 约束的直连规则集排在兜底之后不报错
+  const local = [...ORDERED];
+  local.splice(local.indexOf(catchAll) + 1, 0, "Local.list");
+  expect(checkOrder(conf(local))).toEqual([]);
 });
 
 test("约束涉及的规则缺失或重复都报错", () => {
