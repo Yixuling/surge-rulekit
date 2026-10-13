@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        // Surge 官方语法高亮与诊断（诊断调用 surge-cli）：需 macOS 上的 Surge Mac 6.10.0+ 与 VS Code 1.85+
+        "surgenetworks.surge-language-support"
+    ]
+}
