@@ -1,6 +1,10 @@
 {
   "permissions": {
-    "ask": ["Bash(bun run deploy:*)", "Bash(bun src/cli/deploy.ts:*)"]
+    "ask": [
+      "Bash(bun run deploy:*)",
+      "Bash(bun src/cli/deploy.ts:*)",
+      "Bash(bun run private:backup:*)"
+    ]
   },
   "hooks": {
     "PreToolUse": [{
