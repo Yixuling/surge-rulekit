@@ -1,8 +1,8 @@
 // bun run deploy [--force]
 // 渲染 → surge-cli 校验 → 检查 iCloud 配置是否在 UI / iOS 上被改过 → 覆盖 → 记录基准 → reload
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { dirname, join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { driftReference, normalize } from "../normalize";
 import { build, DIST, ROOT } from "../template";
 
@@ -51,7 +51,11 @@ if (existsSync(PROFILE)) {
   }
 }
 
-writeFileSync(PROFILE, conf);
+// 写临时文件再 rename：直接覆盖会先清空文件，iCloud 若在写完前读到，会把残缺配置同步到 iOS。
+// 已实测 iCloud 对同目录 rename 覆盖不产生冲突副本，临时文件须在同目录（同卷 rename 才原子）
+const tmp = join(dirname(PROFILE), `.${basename(PROFILE)}.tmp`);
+writeFileSync(tmp, conf, { mode: 0o600 }); // rename 换的是新文件，不继承原文件权限，配置含 MITM 私钥
+renameSync(tmp, PROFILE);
 mkdirSync(dirname(BASELINE), { recursive: true });
 writeFileSync(BASELINE, conf, { mode: 0o600 });
 
