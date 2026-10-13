@@ -1,6 +1,6 @@
 .DS_Store
 
-# 依赖（bun install，目前只有编辑器用的 @types/bun）
+# 依赖（bun install：@types/bun 与 typescript，供编辑器和 CI 类型检查）
 /node_modules/
 
 # 渲染产物（bun run render）
