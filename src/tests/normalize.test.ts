@@ -3,6 +3,8 @@ import { driftReference, normalize, splitFields } from "../normalize";
 
 test("splitFields：引号内逗号不切，去掉引号与空白", () => {
   expect(splitFields(' a , "b, c" ,d')).toEqual(["a", "b, c", "d"]);
+  // 含逗号的正则 Surge 自己也要求加引号（不加 surge-cli -c 报 invalid），按引号切即与 Surge 一致
+  expect(splitFields('select, policy-regex-filter = "(A){1,2}", hidden = 1')).toEqual(["select", 'policy-regex-filter = "(A){1,2}"', "hidden = 1"]);
 });
 
 // 取自 Surge UI 保存前后的真实差异
