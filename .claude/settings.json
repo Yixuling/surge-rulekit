@@ -1,4 +1,7 @@
 {
+  "permissions": {
+    "ask": ["Bash(bun run deploy:*)", "Bash(bun src/cli/deploy.ts:*)"]
+  },
   "hooks": {
     "PreToolUse": [{
       "matcher": "Edit|Write",
