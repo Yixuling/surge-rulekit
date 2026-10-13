@@ -3,6 +3,8 @@
 # 接线方式见 CLAUDE.md（Claude Code 专属部分）。退出码 2 = 阻止工具调用并把 stderr 交回给 Claude。
 set -uo pipefail
 
+# 缺 jq 时宁可全拦也不放行：静默放行等于守卫失效
+command -v jq >/dev/null || { echo "缺少 jq，生成物守卫无法解析工具输入，已拦截。macOS 15 起自带 /usr/bin/jq" >&2; exit 2; }
 path=$(jq -r '.tool_input.file_path // empty')
 [ -n "$path" ] || exit 0
 
