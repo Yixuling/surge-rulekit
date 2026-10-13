@@ -1,5 +1,6 @@
 {
   "files.associations": {
+    // 模板含 {{变量}} 与 {{> 片段}} 占位符，交给 Surge 扩展会误报语法错误，按 ini 只做高亮；渲染产物 dist/Surge.conf 仍由扩展诊断
     "Surge.tpl.conf": "ini"
   }
 }
