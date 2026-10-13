@@ -20,6 +20,17 @@ test("暂存内容命中扫描串，含 git mv 后改内容的重命名文件", 
   expect(stagedFindings(["LEAK"], repo)).toEqual(["b.txt 第 31 行"]);
 });
 
+test("文件路径命中时报序号、不回显路径", () => {
+  writeFileSync(join(repo, "LEAK.txt"), "clean\n");
+  git("add", "LEAK.txt");
+  expect(stagedFindings(["LEAK"], repo)).toEqual(["第 1 个暂存文件的路径（git diff --cached --name-only 查看）", "b.txt 第 31 行"]);
+  git("rm", "-q", "--cached", "LEAK.txt");
+});
+
+test("域名不区分大小写，其他串区分", () => {
+  expect(hitLines("Leak.Example.COM\nleaky", ["leak.example.com", "LEAKY"])).toEqual([1]);
+});
+
 test("提交信息：注释行与剪切线以下不算", () => {
   const msg = "fix\n# LEAK in comment\nbody LEAK\n# ------------------------ >8 ------------------------\nLEAK in diff\n";
   expect(messageFindings(msg, ["LEAK"])).toEqual(["提交信息第 3 行"]);

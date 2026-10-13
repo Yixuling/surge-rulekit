@@ -14,17 +14,24 @@ function git(args: string[], cwd?: string): Buffer {
   return Bun.spawnSync(["git", ...args], { cwd, stdout: "pipe" }).stdout;
 }
 
+// 域名（含点号的串）不区分大小写，DNS 本就如此；其余串区分大小写，短标识忽略大小写会大量误报
+export function hits(text: string, patterns: string[]): boolean {
+  const lower = text.toLowerCase();
+  return patterns.some((p) => (p.includes(".") ? lower.includes(p.toLowerCase()) : text.includes(p)));
+}
+
 export function hitLines(text: string, patterns: string[]): number[] {
   return text.split("\n").flatMap((line, i) =>
-    patterns.some((p) => line.includes(p)) || LONG_BASE64.test(line.replace(INTEGRITY, "")) ? [i + 1] : [],
+    hits(line, patterns) || LONG_BASE64.test(line.replace(INTEGRITY, "")) ? [i + 1] : [],
   );
 }
 
-// 暂存区里新增、复制、修改、重命名的文本文件中命中的位置。
+// 暂存区里新增、复制、修改、重命名的文件中命中的位置，文件路径本身也查（路径命中时不回显路径）。
 // 重命名（R）必须算上：git mv 后再改内容，git 记为重命名而不是修改
 export function stagedFindings(patterns: string[], cwd?: string): string[] {
   const paths = git(["diff", "--cached", "--name-only", "-z", "--diff-filter=ACMR"], cwd).toString().split("\0").filter(Boolean);
-  return paths.flatMap((path) => {
+  return paths.flatMap((path, i) => {
+    if (hits(path, patterns)) return [`第 ${i + 1} 个暂存文件的路径（git diff --cached --name-only 查看）`];
     const blob = git(["show", `:${path}`], cwd);
     if (blob.includes(0)) return []; // 二进制（图标等）藏不了明文敏感串
     const lines = hitLines(blob.toString(), patterns);
