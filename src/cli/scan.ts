@@ -7,6 +7,8 @@ import { denyStrings, loadPrivate } from "../private";
 import { ROOT } from "../template";
 
 const LONG_BASE64 = /[A-Za-z0-9+/=]{80,}/;
+// npm 包完整性哈希（bun.lock）是公开值，不按 base64 算
+const INTEGRITY = /sha512-[A-Za-z0-9+/]{86}==/g;
 
 function git(args: string[], cwd?: string): Buffer {
   return Bun.spawnSync(["git", ...args], { cwd, stdout: "pipe" }).stdout;
@@ -14,7 +16,7 @@ function git(args: string[], cwd?: string): Buffer {
 
 export function hitLines(text: string, patterns: string[]): number[] {
   return text.split("\n").flatMap((line, i) =>
-    patterns.some((p) => line.includes(p)) || LONG_BASE64.test(line) ? [i + 1] : [],
+    patterns.some((p) => line.includes(p)) || LONG_BASE64.test(line.replace(INTEGRITY, "")) ? [i + 1] : [],
   );
 }
 

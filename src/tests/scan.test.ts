@@ -2,7 +2,7 @@ import { afterAll, expect, test } from "bun:test";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { messageFindings, stagedFindings } from "../cli/scan";
+import { hitLines, messageFindings, stagedFindings } from "../cli/scan";
 
 const repo = mkdtempSync(join(tmpdir(), "scan-test-"));
 const git = (...args: string[]) => Bun.spawnSync(["git", "-c", "user.email=t@t", "-c", "user.name=t", ...args], { cwd: repo });
@@ -27,4 +27,11 @@ test("提交信息：注释行与剪切线以下不算", () => {
 
 test("超长 base64 也会命中", () => {
   expect(messageFindings("A".repeat(80), [])).toEqual(["提交信息第 1 行"]);
+});
+
+test("npm 完整性哈希不算超长 base64，同行的私有值和其他长串照样命中", () => {
+  const integrity = `"sha512-${"A".repeat(86)}=="`;
+  expect(hitLines(integrity, [])).toEqual([]);
+  expect(hitLines(`${integrity} LEAK`, ["LEAK"])).toEqual([1]);
+  expect(hitLines(`${integrity} ${"B".repeat(80)}`, [])).toEqual([1]);
 });
