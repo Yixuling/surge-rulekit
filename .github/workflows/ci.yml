@@ -7,7 +7,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # 与本机 mise 管理的 Bun 保持一致，升级本机后同步改这里
       - uses: oven-sh/setup-bun@v2
         with:
