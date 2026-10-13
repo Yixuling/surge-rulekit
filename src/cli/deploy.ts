@@ -58,3 +58,4 @@ writeFileSync(BASELINE, conf, { mode: 0o600 });
 const reload = run([SURGE, "reload"]);
 if (!reload.ok) fail(`已写入 ${PROFILE}，但 reload 失败：\n${reload.output}`);
 console.log(`已部署到 ${PROFILE} 并重载`);
+console.log("基准 private/state/last-deploy.conf 已更新，记得 bun run private:backup，否则换机器恢复后会误报漂移");
