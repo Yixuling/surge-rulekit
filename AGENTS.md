@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Surge 个人配置与规则库，用法与机制见 README。本文件只记维护约束与决策。私有上下文（机场实名、实测数据、本机端口）在 `private/NOTES.md`。
+Surge 个人配置与规则库。用法见 README（面向使用者）与 `docs/template.md`（面向维护者：私有层、命令、图标重建）。本文件只记维护约束与决策。私有上下文（机场实名、实测数据、本机端口）在 `private/NOTES.md`。
 
 ## 工作流
 
@@ -10,7 +10,7 @@ Surge 个人配置与规则库，用法与机制见 README。本文件只记维�
 - deploy 因漂移停下，说明 UI 或 iOS 上改过配置：先把要保留的部分回填进模板，再用 `--force`
 - 新增模板变量时，同步在 `private.example/` 里加示例值，否则 CI 失败。改过 `private/` 后执行 `bun run private:backup`（需要 `op` 已登录）
 - `rules/`、`icons/` 通过 raw URL 引用：推送后 Surge 按外部资源的 `update-interval`（默认 86400 秒）自动刷新，最多滞后 24 小时；要立即生效执行 `surge-cli external-resource update all`
-- `icons/*.png` 由 `scripts/build-icons.sh` 生成，勿手工出图。上游来源固定版本并按 `scripts/icons.lock` 校验 sha256，重建逐字节可复现：`git status` 里出现的图标就是像素真的变了。换来源或升级版本时用 `UPDATE_LOCK=1` 重新记录，再核对图标 diff
+- `icons/*.png` 由 `bun run icons` 生成，勿手工出图。重建逐字节可复现，`git status` 里出现的图标就是像素真的变了；换来源或升级版本后要核对图标 diff
 - surge-cli 不在 PATH：`/Applications/Surge.app/Contents/Applications/surge-cli`
 
 surge-cli 实测行为（官方文档没写）：`test-policy` 对订阅节点静默无效，测延迟要用 `test-group "<地区 Smart 组名>"`，再读 HTTP API 的 `benchmark_results`；`test-all-policies` 并发高，可能出现假超时，下结论前先低并发复测。
@@ -19,7 +19,7 @@ surge-cli 实测行为（官方文档没写）：`test-policy` 对订阅节点�
 
 公开仓库（含提交信息）不得出现：MITM CA、订阅 URL、HTTP API 密钥、隐私直连域名、机场实名。公开层一律用「主力机场 / 备用机场 / 专线」。
 
-`values.env` 只放模板变量，其中 `SECRET_*` 的值会进入提交扫描清单；其余要扫描的片段写在 `private/deny.txt`。太短或太常见、会误报的值不要用 `SECRET_` 前缀，改在 `deny.txt` 加一条带更长上下文的片段。`HTTP_API_KEY` 有意不加前缀、不换长随机串：API 只监听 127.0.0.1，靠 `deny.txt` 的上下文片段兜底，已评估保留。扫描只认得已知的值，提交前仍要人工过目 diff。
+扫描清单由 `SECRET_*` 的值、`deny.txt` 与私有片段里的域名组成。太短或太常见、会误报的值不要用 `SECRET_` 前缀，改在 `deny.txt` 加一条带更长上下文的片段。`HTTP_API_KEY` 有意不加前缀、不换长随机串：API 只监听 127.0.0.1，靠 `deny.txt` 的上下文片段兜底，已评估保留。扫描只认得已知的值，提交前仍要人工过目 diff。
 
 ## 约束与决策
 
