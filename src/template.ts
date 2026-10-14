@@ -49,9 +49,15 @@ export function render(template: string, layer: PrivateLayer): string {
 // 模板开头的注释块只描述模板本身，产物里换成生成说明
 export const GENERATED_HEADER = "# 由 Surge.tpl.conf 经 bun run render 生成，勿直接编辑；改配置请改模板后 bun run deploy\n";
 
+export const readTemplate = (): string => readFileSync(join(ROOT, "Surge.tpl.conf"), "utf8");
+
 export function build(privateDir = join(ROOT, "private")): string {
-  const rendered = render(readFileSync(join(ROOT, "Surge.tpl.conf"), "utf8"), loadPrivate(privateDir));
-  const conf = GENERATED_HEADER + rendered.replace(/^(#.*\n)+\n*/, "\n");
+  return finalize(render(readTemplate(), loadPrivate(privateDir)), GENERATED_HEADER);
+}
+
+// 换上产物头部，再检查规则顺序与策略引用（私有配置与公开配置共用）
+export function finalize(rendered: string, header: string): string {
+  const conf = header + rendered.replace(/^(#.*\n)+\n*/, "\n");
   const problems = checkOrder(conf);
   if (problems.length) throw new Error(`规则顺序约束不满足（见 src/order.ts）：\n${problems.map((p) => `  - ${p}`).join("\n")}`);
   const refs = checkReferences(conf);

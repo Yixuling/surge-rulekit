@@ -16,5 +16,8 @@ case "$path" in
   */dist/*|dist/*)
     echo "dist/ 是 bun run render 的产物，不要直接编辑。改 Surge.tpl.conf 或 private/ 后重新渲染。" >&2
     exit 2 ;;
+  */Surge-*.conf|Surge-*.conf)
+    echo "根目录的 Surge-*.conf 是 bun run render 生成的公开配置，不要直接编辑。改 Surge.tpl.conf 或 src/public.ts 后重新渲染。" >&2
+    exit 2 ;;
 esac
 exit 0

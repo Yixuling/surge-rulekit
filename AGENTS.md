@@ -4,7 +4,8 @@ Surge 个人配置与规则库，用法与机制见 README。本文件只记维�
 
 ## 工作流
 
-- 改配置只改 `Surge.tpl.conf` 或 `private/`，改完依次跑 `bun run render`、`bun test`、`surge-cli -c dist/Surge.conf`（render 不检查 Surge 语法）。`dist/` 是产物，勿手改
+- 改配置只改 `Surge.tpl.conf` 或 `private/`，改完依次跑 `bun run render`、`bun test`、`surge-cli -c` 逐个校验 `dist/Surge.conf` 与根目录的 `Surge-*.conf`（render 不检查 Surge 语法）。`dist/` 是产物，勿手改
+- render 同时在根目录生成三份公开配置 `Surge-Single.conf`、`Surge-Dual.conf`、`Surge-Merged.conf`（单机场、双机场分开订阅、双机场合并订阅），由 `src/public.ts` 从模板转换、提交入库、勿手改。改模板后连同这三份一起提交，`bun test` 会检查两者同步；转换按模板原文匹配，模板措辞变了导致匹配不上时 render 直接报错，按报错同步 `src/public.ts`
 - **`bun run deploy` 必须先征得用户同意**：它会改写 iCloud 里正在运行的 `Surge.conf`（Mac 与 iOS 共用）并重载
 - deploy 因漂移停下，说明 UI 或 iOS 上改过配置：先把要保留的部分回填进模板，再用 `--force`
 - 新增模板变量时，同步在 `private.example/` 里加示例值，否则 CI 失败。改过 `private/` 后执行 `bun run private:backup`（需要 `op` 已登录）
@@ -39,7 +40,7 @@ surge-cli 实测行为（官方文档没写）：`test-policy` 对订阅节点�
 
 ## 代码与风格
 
-- 源码：`src/template.ts` 渲染与产物头部、`src/order.ts` 顺序约束、`src/references.ts` 策略引用检查、`src/normalize.ts` 规范化与漂移判断、`src/private.ts` 私有层与扫描清单、`src/cli/` 命令入口、`src/tests/` 测试
+- 源码：`src/template.ts` 渲染与产物头部、`src/order.ts` 顺序约束、`src/references.ts` 策略引用检查、`src/public.ts` 公开配置转换、`src/normalize.ts` 规范化与漂移判断、`src/private.ts` 私有层与扫描清单、`src/cli/` 命令入口、`src/tests/` 测试
 - 模板等号按块（空行分隔）对齐，emoji 与中文按 2 列宽计；行内参数列（如 `icon-url`）也对齐
 - `scripts/` 运行在 macOS 自带 bash 3.2：变量后紧跟中文写 `${var}`，不用关联数组
 - 提交信息遵循 Conventional Commits，subject 用中文

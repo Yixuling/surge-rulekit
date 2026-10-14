@@ -9,11 +9,28 @@
 
 <img src="icons/Apple.png" width="36" alt="Apple"> <img src="icons/AI.png" width="36" alt="AI"> <img src="icons/ArcDia.png" width="36" alt="Arc & Dia"> <img src="icons/DeepL.png" width="36" alt="DeepL"> <img src="icons/Disney.png" width="36" alt="Disney+"> <img src="icons/GitHub.png" width="36" alt="GitHub"> <img src="icons/Google.png" width="36" alt="Google"> <img src="icons/JetBrains.png" width="36" alt="JetBrains"> <img src="icons/Netflix.png" width="36" alt="Netflix"> <img src="icons/PayPal.png" width="36" alt="PayPal"> <img src="icons/Twitter.png" width="36" alt="X"> <img src="icons/Telegram.png" width="36" alt="Telegram"> <img src="icons/Speedtest.png" width="36" alt="Speedtest"> <img src="icons/WeChat.png" width="36" alt="WeChat"> <img src="icons/YouTube.png" width="36" alt="YouTube">
 
-[直接引用规则集与图标](#直接引用规则集与图标) • [概览](#概览) • [快速开始](#快速开始) • [模板与私有层](#模板与私有层) • [路由架构](#路由架构) • [规则集](#规则集) • [图标](#图标)
+[下载现成配置](#下载现成配置) • [直接引用规则集与图标](#直接引用规则集与图标) • [概览](#概览) • [快速开始](#快速开始) • [模板与私有层](#模板与私有层) • [路由架构](#路由架构) • [规则集](#规则集) • [图标](#图标)
 
 </div>
 
 [Surge](https://nssurge.com) 的规则集与个人配置框架。`rules/` 补的是社区规则没覆盖的部分（AI 服务、Apple Intelligence、追踪拦截等），一行 `RULE-SET` 就能引用到自己的配置里，策略组图标也一样，不必用这套配置框架。配置部分是一份不含敏感值的公开模板，订阅地址、证书、机场名称等私有值留在本地，渲染时才合成完整配置。
+
+## 下载现成配置
+
+不想装工具、改模板，可以直接用生成好的完整配置，填上自己的订阅链接就能用：
+
+| 配置 | 适合 |
+|---|---|
+| [`Surge-Single.conf`](Surge-Single.conf) | 只有一家机场 |
+| [`Surge-Dual.conf`](Surge-Dual.conf) | 两家机场，各有一条订阅链接 |
+| [`Surge-Merged.conf`](Surge-Merged.conf) | 两家机场的订阅已合并成一条（比如用 [Sub-Store](https://github.com/sub-store-org/Sub-Store) 合并），按节点名里的关键词区分两家 |
+
+1. 在 Surge 里选「从 URL 安装配置」，粘贴对应文件的 raw 链接，比如 `https://raw.githubusercontent.com/Yixuling/surge-rulekit/refs/heads/main/Surge-Single.conf`
+2. 编辑这份配置的文本，把标着 👇 的几行换成自己的订阅链接；合并订阅版还要填两家机场的节点关键词
+3. 双机场版里 `机场A` 是主力，`机场B` 是备用：各地区优先用 `机场A`，它不通时自动切到 `机场B`
+
+> [!NOTE]
+> 装好的配置是一份本地副本，不会跟着仓库更新；规则集和图标通过链接引用，会自动更新。
 
 ## 直接引用规则集与图标
 
@@ -117,7 +134,7 @@ bun run deploy   # 校验、检查漂移后写入 iCloud 并重载
 
 | 命令 | 作用 |
 |---|---|
-| `bun run render [目录]` | 用私有层（默认 `private/`）渲染模板到 `dist/Surge.conf`，并检查规则顺序 |
+| `bun run render [目录]` | 用私有层（默认 `private/`）渲染模板到 `dist/Surge.conf`，同时在根目录生成公开配置 `Surge-*.conf`，并检查规则顺序 |
 | `bun run deploy [--force]` | 渲染 → `surge-cli` 校验 → 漂移检查 → 写入 iCloud → 重载 |
 | `bun run audit [--speed 主机...]` | 只读列出本月落到 FINAL 的域名，供补规则参考；`--speed` 对比指定主机直连与走代理的首字节耗时 |
 | `bun test` | 单元测试（含用 `private.example/` 完整渲染一遍模板） |
@@ -206,10 +223,11 @@ bun run icons Netflix AI   # 只重建指定图标
 
 ```
 Surge.tpl.conf        配置模板
+Surge-*.conf          公开配置（由模板生成，可直接下载）
 private.example/      私有层示例（复制为 private/ 后填值）
 rules/                自维护规则集
 icons/                策略组图标（由脚本生成）
-src/                  渲染、顺序约束、策略引用检查、规范化与私有层读取
+src/                  渲染、公开配置转换、顺序约束、策略引用检查、规范化与私有层读取
 src/cli/              render、deploy、scan、audit 命令入口
 src/tests/            单元测试
 scripts/              图标生成脚本与 git hooks
