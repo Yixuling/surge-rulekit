@@ -34,7 +34,7 @@ flowchart LR
 - **规则顺序与引用检查**：`[Rule]` 段的先后依赖写成约束表，顺序被打乱时渲染直接报错；引用了未定义的策略或策略组同样报错，不必等 Surge 加载时才发现
 - **部署防覆盖**：部署前先校验语法，再比较 iCloud 里的配置有没有在 UI 或 iOS 上被改过，改过就停下并列出语义差异
 - **提交前防泄露**：pre-commit 与 commit-msg 两个 hook 用私有层的值扫描暂存内容和提交信息，命中即拒绝
-- **自维护规则集**：补社区规则没覆盖或更新滞后的域名，Apple Intelligence 那份与官方文档逐条对应
+- **自维护规则集**：补[社区规则](#上游规则)没覆盖或更新滞后的域名，Apple Intelligence 那份与官方文档逐条对应
 - **可复现的图标**：15 个策略组图标由脚本生成，上游素材固定版本并校验 sha256，重建逐字节一致
 
 ## 快速开始
@@ -68,6 +68,7 @@ bun run deploy
 |---|---|
 | `bun run render [目录]` | 用私有层（默认 `private/`）渲染模板到 `dist/Surge.conf`，并检查规则顺序 |
 | `bun run deploy [--force]` | 渲染 → `surge-cli` 校验 → 漂移检查 → 写入 iCloud → 重载 |
+| `bun run audit [--speed 主机...]` | 只读列出本月落到 FINAL 的域名，供补规则参考；`--speed` 对比指定主机直连与走代理的首字节耗时 |
 | `bun test` | 单元测试（含用 `private.example/` 完整渲染一遍模板） |
 | `bun run icons [名称...]` | 重建全部或指定图标，并输出明暗双主题预览图 |
 | `bun run hooks` | 启用 `scripts/hooks/` 里的提交扫描，并建立 Claude Code 的 Surge 技能软链 |
@@ -110,9 +111,22 @@ flowchart LR
 15 个服务分流组（Apple、AI、Google、Netflix 等）各自独立选择出口：代理、直连、专线、任一地区或具体节点。
 
 > [!NOTE]
-> `[Rule]` 段有顺序依赖，比如 Apple 需代理的规则须在 `17.0.0.0/8` 直连之前、AI 须在 Google 之前、微信须是第一个规则集。约束与原因都写在 [`src/order.ts`](src/order.ts)，调整规则顺序前先看那里。
+> `[Rule]` 段有顺序依赖，比如 Apple 需代理的规则须在 `17.0.0.0/8` 直连之前、AI 须在 Google 之前、Guard 拦截与微信须是最前面的两个规则集。约束与原因都写在 [`src/order.ts`](src/order.ts)，调整规则顺序前先看那里。
 
 ## 规则集
+
+服务分流的主体直接引用社区规则，本仓库只维护社区没覆盖、更新滞后或不适合直接用的部分。
+
+### 上游规则
+
+| 来源 | 用到的规则 |
+|---|---|
+| [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script) | 微信、App Store、iCloud、Apple 媒体与开发者、TestFlight、YouTube、Google、GitHub、Twitter、Telegram、Netflix、Disney+、PayPal、Speedtest，以及兜底的 Global 与 China 两份大列表 |
+| [VirgilClyne/GetSomeFries](https://github.com/VirgilClyne/GetSomeFries) | `ASN.China`，国内 IP 直连 |
+
+上游规则都在模板里通过 raw URL 引用、跟随上游更新，仓库不存副本。感谢 blackmatrix7 长期维护这套规则。
+
+### 自维护规则
 
 | 规则集 | 用途 |
 |---|---|
@@ -122,6 +136,9 @@ flowchart LR
 | [`AppleDirect.list`](rules/AppleDirect.list) | App Store 购买 API 与安装包 CDN（直连） |
 | [`ArcDia.list`](rules/ArcDia.list) | Arc / Dia 浏览器 |
 | [`DeepL.list`](rules/DeepL.list) | DeepL 翻译 |
+| [`JetBrains.list`](rules/JetBrains.list) | JetBrains 全家（IDE、Toolbox、插件市场、AI、团队工具），补全上游列表后替代它 |
+| [`GlobalExtra.list`](rules/GlobalExtra.list) | Global 列表未收录、实测落到兜底规则的常用境外服务 |
+| [`Guard.list`](rules/Guard.list) | 本机实测的纯追踪域名（拦截）；带跳转、风控、表单功能的追踪不收，拦了会坏功能 |
 
 在自己的配置里引用：
 
@@ -150,8 +167,8 @@ Surge.tpl.conf        配置模板
 private.example/      私有层示例（复制为 private/ 后填值）
 rules/                自维护规则集
 icons/                策略组图标（由脚本生成）
-src/                  渲染、顺序约束、规范化与私有层读取
-src/cli/              render、deploy、scan 命令入口
+src/                  渲染、顺序约束、策略引用检查、规范化与私有层读取
+src/cli/              render、deploy、scan、audit 命令入口
 src/tests/            单元测试
 scripts/              图标生成脚本与 git hooks
 ```
