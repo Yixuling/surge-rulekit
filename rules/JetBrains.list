@@ -1,0 +1,41 @@
+# JetBrains 规则
+# 说明：JetBrains 全家域名（IDE、Toolbox、插件市场、账户、AI、团队工具、Kotlin），分流至 JetBrains 组；国内镜像 jetbrains.com.cn 不收录，留给 China 列表直连
+# 来源：自维护，参考 blackmatrix7 Jetbrains.list 与 JetBrains 防火墙白名单（youtrack.jetbrains.com SUPPORT-A-288）
+
+# ===== 主站、下载、插件市场、账户 =====
+DOMAIN-SUFFIX, jetbrains.com
+DOMAIN-SUFFIX, jetbrains.net
+DOMAIN-SUFFIX, jetbrains.org
+DOMAIN-SUFFIX, jetbrains.io
+DOMAIN-SUFFIX, jetbrains.dev
+DOMAIN-SUFFIX, jetbrains.help
+DOMAIN-SUFFIX, jetbrains.design
+DOMAIN-SUFFIX, jetbrains.academy
+DOMAIN-SUFFIX, jb.gg
+DOMAIN-SUFFIX, toolbox.app
+
+# ===== IntelliJ 平台（含 AI 后端 api.app.prod.grazie.aws.intellij.net） =====
+DOMAIN-SUFFIX, intellij.com
+DOMAIN-SUFFIX, intellij.net
+DOMAIN-SUFFIX, intellij.org
+
+# ===== 云服务与 JetBrains AI =====
+DOMAIN-SUFFIX, jetbrains.cloud
+DOMAIN-SUFFIX, jetbrainscloud.com
+DOMAIN-SUFFIX, jetbrains.ai
+DOMAIN-SUFFIX, grazie.ai
+
+# ===== 团队工具 =====
+DOMAIN-SUFFIX, jetbrains.space
+DOMAIN-SUFFIX, jetbrains.team
+DOMAIN-SUFFIX, youtrack.cloud
+DOMAIN-SUFFIX, myjetbrains.com
+DOMAIN-SUFFIX, teamcity.com
+DOMAIN-SUFFIX, qodana.cloud
+DOMAIN-SUFFIX, datalore.io
+
+# ===== Kotlin 与 Ktor =====
+DOMAIN-SUFFIX, kotlinlang.org
+DOMAIN-SUFFIX, kotlinconf.com
+DOMAIN-SUFFIX, kotl.in
+DOMAIN-SUFFIX, ktor.io
