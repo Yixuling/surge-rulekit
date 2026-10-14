@@ -1,6 +1,9 @@
 <div align="center">
 
-# Surge Rulekit
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/logo-dark.png">
+  <img src="docs/logo-light.png" width="436" alt="Surge Rulekit">
+</picture>
 
 [![CI](https://img.shields.io/github/actions/workflow/status/Yixuling/surge-rulekit/ci.yml?style=flat-square&label=CI)](https://github.com/Yixuling/surge-rulekit/actions)
 [![Surge](https://img.shields.io/badge/Surge-macOS%20%7C%20iOS-0a84ff?style=flat-square)](https://nssurge.com)
