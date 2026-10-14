@@ -1,0 +1,16 @@
+# Global 补充规则
+# 说明：Global_All_No_Resolve.list 未收录、实测落到 FINAL 的常用境外服务；点名后直接走代理，免去 FINAL 前 IP 规则触发的本地 DNS 解析
+# 来源：自维护
+
+# ===== Typeless =====
+DOMAIN-SUFFIX, typeless.com
+DOMAIN-SUFFIX, typeless-static.com
+
+# ===== Raycast =====
+DOMAIN-SUFFIX, raycast.com
+
+# ===== Spark（后端 smartmailcloud.com 已在 Global） =====
+DOMAIN-SUFFIX, sparkmailapp.com
+
+# ===== CleanShot =====
+DOMAIN-SUFFIX, cleanshot.com
