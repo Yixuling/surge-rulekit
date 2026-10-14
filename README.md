@@ -9,11 +9,31 @@
 
 <img src="icons/Apple.png" width="36" alt="Apple"> <img src="icons/AI.png" width="36" alt="AI"> <img src="icons/ArcDia.png" width="36" alt="Arc & Dia"> <img src="icons/DeepL.png" width="36" alt="DeepL"> <img src="icons/Disney.png" width="36" alt="Disney+"> <img src="icons/GitHub.png" width="36" alt="GitHub"> <img src="icons/Google.png" width="36" alt="Google"> <img src="icons/JetBrains.png" width="36" alt="JetBrains"> <img src="icons/Netflix.png" width="36" alt="Netflix"> <img src="icons/PayPal.png" width="36" alt="PayPal"> <img src="icons/Twitter.png" width="36" alt="X"> <img src="icons/Telegram.png" width="36" alt="Telegram"> <img src="icons/Speedtest.png" width="36" alt="Speedtest"> <img src="icons/WeChat.png" width="36" alt="WeChat"> <img src="icons/YouTube.png" width="36" alt="YouTube">
 
-[概览](#概览) • [快速开始](#快速开始) • [模板与私有层](#模板与私有层) • [路由架构](#路由架构) • [规则集](#规则集) • [图标](#图标)
+[直接引用规则集](#直接引用规则集) • [概览](#概览) • [快速开始](#快速开始) • [模板与私有层](#模板与私有层) • [路由架构](#路由架构) • [规则集](#规则集) • [图标](#图标)
 
 </div>
 
-[Surge](https://nssurge.com) 的个人配置框架。公开仓库里只有一份不含敏感值的配置模板，订阅地址、证书、机场名称等私有值留在本地，渲染时才合成完整配置。仓库同时维护了一套规则集和策略组图标，可以单独通过 raw URL 引用。
+[Surge](https://nssurge.com) 的规则集与个人配置框架。`rules/` 补的是社区规则没覆盖的部分（AI 服务、Apple Intelligence、追踪拦截等），一行 `RULE-SET` 就能引用到自己的配置里，不必用这套配置框架。配置部分是一份不含敏感值的公开模板，订阅地址、证书、机场名称等私有值留在本地，渲染时才合成完整配置。
+
+## 直接引用规则集
+
+把需要的几行加进自己配置的 `[Rule]` 段，策略名换成自己的：
+
+```ini
+# 追踪拦截，放在所有规则集之前
+RULE-SET, https://raw.githubusercontent.com/Yixuling/surge-rulekit/refs/heads/main/rules/Guard.list, REJECT
+# AI 服务（含 IP 段），放在 Google、Twitter 规则之前
+RULE-SET, https://raw.githubusercontent.com/Yixuling/surge-rulekit/refs/heads/main/rules/AI.list, AI, no-resolve, extended-matching
+# Apple Intelligence，放在 17.0.0.0/8 直连之前
+RULE-SET, https://raw.githubusercontent.com/Yixuling/surge-rulekit/refs/heads/main/rules/AppleIntelligence.list, Proxy, extended-matching
+# 社区 Global 列表未收录的常用境外服务
+RULE-SET, https://raw.githubusercontent.com/Yixuling/surge-rulekit/refs/heads/main/rules/GlobalExtra.list, Proxy, extended-matching
+```
+
+其余规则集和用途见[规则集](#规则集)。
+
+> [!TIP]
+> 规则集更新推送后，Surge 不会立刻拉取新版本。执行 `surge-cli external-resource update all` 手动刷新。
 
 ## 概览
 
@@ -139,15 +159,6 @@ flowchart LR
 | [`JetBrains.list`](rules/JetBrains.list) | JetBrains 全家（IDE、Toolbox、插件市场、AI、团队工具），补全上游列表后替代它 |
 | [`GlobalExtra.list`](rules/GlobalExtra.list) | Global 列表未收录、实测落到兜底规则的常用境外服务 |
 | [`Guard.list`](rules/Guard.list) | 本机实测的纯追踪域名（拦截）；带跳转、风控、表单功能的追踪不收，拦了会坏功能 |
-
-在自己的配置里引用：
-
-```ini
-RULE-SET, https://raw.githubusercontent.com/Yixuling/surge-rulekit/refs/heads/main/rules/AI.list, AI, extended-matching
-```
-
-> [!TIP]
-> 规则集更新推送后，Surge 不会立刻拉取新版本。执行 `surge-cli external-resource update all` 手动刷新。
 
 ## 图标
 
