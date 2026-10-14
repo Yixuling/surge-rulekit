@@ -12,3 +12,6 @@
 # Claude Code：settings.json 与项目技能入库共享；本地覆盖与 Surge 技能软链（bun run hooks 建立）不入库
 /.claude/settings.local.json
 /.claude/skills/surge
+
+# 会话交接笔记（本地使用，含个人待办）
+/HANDOFF.md
