@@ -49,6 +49,8 @@ DOMAIN-SUFFIX, notebooklm.google
 
 # ===== Grok (xAI) =====
 DOMAIN-SUFFIX, grok.com
+DOMAIN-SUFFIX, grokusercontent.com
+DOMAIN-SUFFIX, grokcli.io
 DOMAIN-SUFFIX, x.ai
 
 # ===== Perplexity =====

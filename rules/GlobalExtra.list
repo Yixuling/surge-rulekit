@@ -8,9 +8,133 @@ DOMAIN-SUFFIX, typeless-static.com
 
 # ===== Raycast =====
 DOMAIN-SUFFIX, raycast.com
+DOMAIN-SUFFIX, raycast-releases.com
+DOMAIN-SUFFIX, ray.so
 
-# ===== Spark（后端 smartmailcloud.com 已在 Global） =====
+# ===== Spark =====
 DOMAIN-SUFFIX, sparkmailapp.com
 
-# ===== CleanShot =====
+# ===== CleanShot X =====
 DOMAIN-SUFFIX, cleanshot.com
+DOMAIN-SUFFIX, cleanshot.cloud
+
+# ===== Setapp / CleanMyMac =====
+DOMAIN-SUFFIX, macpaw.com
+DOMAIN-SUFFIX, cleanmymac.com
+DOMAIN-SUFFIX, devmate.com
+
+# ===== Bob =====
+DOMAIN-SUFFIX, bobtranslate.com
+DOMAIN-SUFFIX, ripperhe.com
+
+# ===== Dash =====
+DOMAIN-SUFFIX, kapeli.com
+
+# ===== Ghostty =====
+DOMAIN-SUFFIX, ghostty.org
+
+# ===== Infuse =====
+DOMAIN-SUFFIX, firecore.com
+
+# ===== Keka =====
+DOMAIN-SUFFIX, keka.io
+
+# ===== Obsidian =====
+DOMAIN-SUFFIX, obsidian.md
+
+# ===== OrbStack =====
+DOMAIN-SUFFIX, orbstack.dev
+
+# ===== Parallels Desktop =====
+DOMAIN-SUFFIX, myparallels.com
+
+# ===== Tower =====
+DOMAIN-SUFFIX, git-tower.com
+DOMAIN-SUFFIX, fournova.com
+
+# ===== Zed =====
+DOMAIN-SUFFIX, zed.dev
+
+# ===== Alcove =====
+DOMAIN-SUFFIX, tryalcove.com
+
+# ===== CC Switch =====
+DOMAIN-SUFFIX, ccswitch.io
+
+# ===== Magpie =====
+DOMAIN-SUFFIX, usemagpie.ai
+
+# ===== Wins =====
+DOMAIN-SUFFIX, wins.cool
+
+# ===== Mole =====
+DOMAIN-SUFFIX, mole.fit
+
+# ===== Cursor =====
+DOMAIN-SUFFIX, open-vsx.org
+
+# ===== Visual Studio Code =====
+DOMAIN-SUFFIX, schemastore.org
+
+# ===== Tavily =====
+DOMAIN-SUFFIX, tavily.com
+
+# ===== Context7 =====
+DOMAIN-SUFFIX, context7.com
+
+# ===== Firecrawl =====
+DOMAIN-SUFFIX, firecrawl.dev
+
+# ===== mise =====
+DOMAIN-SUFFIX, jdx.dev
+
+# ===== uv =====
+DOMAIN-SUFFIX, astral.sh
+
+# ===== chezmoi =====
+DOMAIN-SUFFIX, chezmoi.io
+
+# ===== Gradle =====
+DOMAIN-SUFFIX, gradle.org
+
+# ===== Adoptium =====
+DOMAIN-SUFFIX, adoptium.net
+
+# ===== Hibernate =====
+DOMAIN-SUFFIX, hibernate.org
+
+# ===== jOOQ =====
+DOMAIN-SUFFIX, jooq.org
+
+# ===== Liquibase =====
+DOMAIN-SUFFIX, liquibase.com
+
+# ===== Sonatype =====
+DOMAIN-SUFFIX, sonatype.com
+
+# ===== Ant Design =====
+DOMAIN-SUFFIX, ant.design
+
+# ===== shadcn/ui =====
+DOMAIN-SUFFIX, shadcn.com
+
+# ===== three.js =====
+DOMAIN-SUFFIX, threejs.org
+
+# ===== Socket.IO =====
+DOMAIN-SUFFIX, socket.io
+
+# ===== JSR =====
+DOMAIN-SUFFIX, jsr.io
+
+# ===== Playwright =====
+DOMAIN-SUFFIX, playwright.dev
+
+# ===== Supabase =====
+DOMAIN-SUFFIX, supabase.co
+
+# ===== Product Hunt =====
+DOMAIN-SUFFIX, producthunt.com
+
+# ===== CodePen =====
+DOMAIN-SUFFIX, codepen.io
