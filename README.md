@@ -9,13 +9,13 @@
 
 <img src="icons/Apple.png" width="36" alt="Apple"> <img src="icons/AI.png" width="36" alt="AI"> <img src="icons/ArcDia.png" width="36" alt="Arc & Dia"> <img src="icons/DeepL.png" width="36" alt="DeepL"> <img src="icons/Disney.png" width="36" alt="Disney+"> <img src="icons/GitHub.png" width="36" alt="GitHub"> <img src="icons/Google.png" width="36" alt="Google"> <img src="icons/JetBrains.png" width="36" alt="JetBrains"> <img src="icons/Netflix.png" width="36" alt="Netflix"> <img src="icons/PayPal.png" width="36" alt="PayPal"> <img src="icons/Twitter.png" width="36" alt="X"> <img src="icons/Telegram.png" width="36" alt="Telegram"> <img src="icons/Speedtest.png" width="36" alt="Speedtest"> <img src="icons/WeChat.png" width="36" alt="WeChat"> <img src="icons/YouTube.png" width="36" alt="YouTube">
 
-[直接引用规则集](#直接引用规则集) • [概览](#概览) • [快速开始](#快速开始) • [模板与私有层](#模板与私有层) • [路由架构](#路由架构) • [规则集](#规则集) • [图标](#图标)
+[直接引用规则集与图标](#直接引用规则集与图标) • [概览](#概览) • [快速开始](#快速开始) • [模板与私有层](#模板与私有层) • [路由架构](#路由架构) • [规则集](#规则集) • [图标](#图标)
 
 </div>
 
-[Surge](https://nssurge.com) 的规则集与个人配置框架。`rules/` 补的是社区规则没覆盖的部分（AI 服务、Apple Intelligence、追踪拦截等），一行 `RULE-SET` 就能引用到自己的配置里，不必用这套配置框架。配置部分是一份不含敏感值的公开模板，订阅地址、证书、机场名称等私有值留在本地，渲染时才合成完整配置。
+[Surge](https://nssurge.com) 的规则集与个人配置框架。`rules/` 补的是社区规则没覆盖的部分（AI 服务、Apple Intelligence、追踪拦截等），一行 `RULE-SET` 就能引用到自己的配置里，策略组图标也一样，不必用这套配置框架。配置部分是一份不含敏感值的公开模板，订阅地址、证书、机场名称等私有值留在本地，渲染时才合成完整配置。
 
-## 直接引用规则集
+## 直接引用规则集与图标
 
 把需要的几行加进自己配置的 `[Rule]` 段，策略名换成自己的：
 
@@ -32,8 +32,14 @@ RULE-SET, https://raw.githubusercontent.com/Yixuling/surge-rulekit/refs/heads/ma
 
 其余规则集和用途见[规则集](#规则集)。
 
+策略组图标在组定义末尾加 `icon-url`，文件名就是顶部那排图标的名字，全部在 [`icons/`](icons/)：
+
+```ini
+Netflix = select, Proxy, DIRECT, icon-url = https://raw.githubusercontent.com/Yixuling/surge-rulekit/refs/heads/main/icons/Netflix.png
+```
+
 > [!TIP]
-> 规则集更新推送后，Surge 不会立刻拉取新版本。执行 `surge-cli external-resource update all` 手动刷新。
+> 规则集更新后，Surge 按外部资源的更新间隔（默认 24 小时）自动拉取。想马上生效，在 Surge 的「外部资源」里点「更新全部外部资源」。
 
 ## 概览
 
@@ -65,18 +71,43 @@ flowchart LR
 - [Bun](https://bun.sh)
 - 可选：`imagemagick` 与 `librsvg`（重建图标）、[1Password CLI](https://developer.1password.com/docs/cli/)（备份私有层）
 
+先 fork 本仓库，再 clone 自己的 fork：
+
 ```bash
-git clone https://github.com/Yixuling/surge-rulekit.git
+git clone https://github.com/<你的用户名>/surge-rulekit.git
 cd surge-rulekit
-cp -R private.example private   # 填入 values.env、snippets/ 与 deny.txt
-bun run render                  # 生成 dist/Surge.conf
+cp -R private.example private   # 私有层，不入库
 bun run hooks                   # 启用提交前扫描
 ```
 
-确认 `dist/Surge.conf` 无误后再部署：
+### 改成自己的配置
+
+模板按「一份订阅里有两家机场的节点」来写：`📡 Subscription` 拉取整份订阅，再按节点名里的关键词分出主力机场和备用机场。两家机场的订阅可以先用 Sub-Store 之类的工具合并成一份。
+
+照着 `private.example/values.env` 里的注释填 `private/values.env`，至少要改这几项：
+
+| 变量 | 填什么 |
+|---|---|
+| `SECRET_SUB_URL` | 订阅地址 |
+| `SECRET_PRIMARY_AIRPORT`、`SECRET_BACKUP_AIRPORT` | 节点名里能区分两家机场的关键词，同时用作这两个策略组的组名 |
+| `SECRET_STATIC_KEYWORD` | 专线节点名里的关键词。这些节点不进地区组，单独放进 `🚄 Static` |
+| `HTTP_API_KEY` | 本机 HTTP API 的密钥，换成随机串 |
+| `SECRET_CA_PASSPHRASE`、`SECRET_CA_P12` | MITM 证书，在 Surge 的 MITM 设置里生成后填入 |
+
+其余私有文件的作用见[模板与私有层](#模板与私有层)。
+
+模板 `Surge.tpl.conf` 按需改：
+
+- **地区**：每个地区的 Smart 组按节点名正则筛选（`policy-regex-filter`），机场的节点命名不同就改正则。增删地区时，Smart 组、fallback 组和 `📍 Regions` 要一起改
+- **只有一家机场**：删掉备用机场的子集组和 Smart 组，fallback 组里只留主力机场，再删掉 `values.env` 里备用机场的两个变量（没用到的变量会让 `render` 报错）
+- **服务组与规则**：新增服务组后，在 `[Rule]` 加对应的 `RULE-SET`。和别的规则有先后依赖的，在 `src/order.ts` 登记，`render` 会检查
+- **自己维护规则或图标**：把模板里的 `Yixuling/surge-rulekit` 换成自己 fork 的路径，否则 Surge 拉的仍是本仓库的文件
+
+改完渲染，确认 `dist/Surge.conf` 无误后再部署：
 
 ```bash
-bun run deploy
+bun run render   # 生成 dist/Surge.conf
+bun run deploy   # 校验、检查漂移后写入 iCloud 并重载
 ```
 
 > [!WARNING]
