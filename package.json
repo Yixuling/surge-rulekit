@@ -5,6 +5,7 @@
   "scripts": {
     "render": "bun src/cli/render.ts",
     "deploy": "bun src/cli/deploy.ts",
+    "audit": "bun src/cli/audit.ts",
     "test": "bun test",
     "private:backup": "bash scripts/private-backup.sh",
     "private:restore": "test ! -e private || { echo \"private/ 已存在，先移走再恢复\" >&2; exit 1; }; op document get surge-rulekit-private | tar -xzf -",
