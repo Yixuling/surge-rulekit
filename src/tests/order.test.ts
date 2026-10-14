@@ -2,7 +2,7 @@ import { expect, test } from "bun:test";
 import { CATCH_ALL, checkOrder, ORDER, ruleIds } from "../order";
 
 const ORDERED = [
-  "WeChat.list", "AppleIntelligence.list", "AppleExtra.list", "AppStore.list", "AppleDirect.list", "iCloud.list", "AppleDev.list", "TestFlight.list",
+  "Guard.list", "WeChat.list", "AppleIntelligence.list", "AppleExtra.list", "AppStore.list", "AppleDirect.list", "iCloud.list", "AppleDev.list", "TestFlight.list",
   "AppleMedia.list", "17.0.0.0/8", "AI.list", "YouTube.list", "Google.list", "Twitter.list", "Global_All_No_Resolve.list",
   "China_All_No_Resolve.list", "LAN", "ASN.China.list",
 ];
@@ -28,10 +28,14 @@ test("每条约束反过来都会被发现", () => {
   }
 });
 
-test("WeChat 不是第一个规则集会被发现", () => {
-  const moved = ["AppleIntelligence.list", "WeChat.list", ...ORDERED.slice(2)];
+test("打头规则集顺序被打乱会被发现", () => {
+  const swapped = ["WeChat.list", "Guard.list", ...ORDERED.slice(2)];
+  expect(checkOrder(conf(swapped))).toContain(
+    "Guard.list 须是第一个 RULE-SET（现在是 WeChat.list）：拦截先于一切分流，追踪域名不能先被其他规则集命中而放行",
+  );
+  const moved = ["Guard.list", "AppleIntelligence.list", "WeChat.list", ...ORDERED.slice(3)];
   expect(checkOrder(conf(moved))).toContain(
-    "WeChat.list 须是第一个 RULE-SET（现在是 AppleIntelligence.list）：微信对出口策略敏感，须先于所有规则集匹配",
+    "WeChat.list 须是第 2 个 RULE-SET（现在是 AppleIntelligence.list）：微信对出口策略敏感，须先于拦截以外的所有规则集匹配",
   );
   // 非规则集（如 IP-CIDR）排在前面不算违反
   expect(checkOrder(conf(["0.0.0.0/32", ...ORDERED]))).toEqual([]);

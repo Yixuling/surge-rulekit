@@ -22,12 +22,13 @@ surge-cli 实测行为（官方文档没写）：`test-policy` 对订阅节点�
 
 ## 约束与决策
 
-- **规则顺序**：约束在 `src/order.ts`（`ORDER` 成对约束 + `FIRST_RULE_SET` 置顶规则集 + `CATCH_ALL` 兜底规则集，所有非 DIRECT 的 RULE-SET 都须在兜底之前）。新增有顺序依赖的规则时，在 `ORDER` 里加一条 `[先, 后, 原因]` 并补测试
+- **规则顺序**：约束在 `src/order.ts`（`ORDER` 成对约束 + `LEADING_RULE_SETS` 打头规则集（Guard 拦截第一、微信第二） + `CATCH_ALL` 兜底规则集，所有非 DIRECT 的 RULE-SET 都须在兜底之前）。新增有顺序依赖的规则时，在 `ORDER` 里加一条 `[先, 后, 原因]` 并补测试
 - **策略引用**：`[Rule]` 用到的策略、策略组成员、`include-other-group` 引用的组都须已定义，render 时由 `src/references.ts` 检查（CI 与 fork 没有 surge-cli，不能只靠 deploy 时的校验）
 - **rules/ 格式由测试强制**：`src/tests/rules.test.ts` 检查三行头部、条目写法与尾部换行，并核对模板引用的本仓库 `rules/`、`icons/` 文件都存在
 - **策略组选择按组名记忆**：可见组（如 `🚄 Static`、服务组）改名后，引用它的组会丢失当前选择、退回第一项，改名前先告知
 - **候选项顺序**：手写候选项总排在 `include-other-group` 引入项之前，重复项自动去重
-- **服务组保持对称**：15 个服务组候选项写法一致，不按服务单独调默认出口（试过，因不对称撤回）。`🔰 Guard` 规则集停用中但保留备用
+- **服务组保持对称**：15 个服务组候选项写法一致，不按服务单独调默认出口（试过，因不对称撤回）
+- **广告追踪拦截**：只启用自维护的 `rules/Guard.list`（本机实测的纯追踪，收录标准见 `.claude/skills/rule-audit`）；上游 Advertising/Privacy/Hijacking 只注释保留作参考，不启用（大列表挤占 iOS 网络扩展内存、隐私列表误拦多，网页广告另有 AdGuard）。带跳转、风控、表单功能的追踪不收，拦了会坏功能
 - **always-real-ip**：不可加 `*.apple.com` 这类宽条目，否则需代理的 Apple 域名会变成裸 IP 连接，被 `17.0.0.0/8` 抢成直连
 - **extended-matching**：需代理的规则集带这个参数，直连规则集不带
 - **不跨机场合并 Smart 组**：把两家机场合进同一个 Smart 组的方案已经实测否决，两家机场质量档位差太多（数据见 NOTES）。除非格局变化，不要重提

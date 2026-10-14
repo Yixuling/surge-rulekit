@@ -1,0 +1,32 @@
+# 广告与追踪拦截规则
+# 说明：作者本机实测、确认为纯追踪的域名（只上报行为，拦了不影响功能）；带跳转、风控、表单功能的追踪不收。可单独启用，与上游 Advertising/Privacy 列表互不依赖、允许重复
+# 来源：自维护
+
+# ===== 广告投放 =====
+DOMAIN-SUFFIX, adsrvr.org
+DOMAIN-SUFFIX, taboola.com
+DOMAIN-SUFFIX, impactradius-event.com
+DOMAIN-SUFFIX, liadm.com
+
+# ===== 营销自动化与访客识别 =====
+DOMAIN-SUFFIX, hs-analytics.net
+DOMAIN-SUFFIX, hs-banner.com
+DOMAIN-SUFFIX, hs-scripts.com
+DOMAIN-SUFFIX, hsadspixel.net
+DOMAIN-SUFFIX, mktoresp.com
+DOMAIN-SUFFIX, demandbase.com
+DOMAIN-SUFFIX, zi-scripts.com
+DOMAIN-SUFFIX, unifyintent.com
+DOMAIN-SUFFIX, calibermind.com
+DOMAIN-SUFFIX, reo.dev
+
+# ===== 产品分析与会话录制 =====
+DOMAIN-SUFFIX, hotjar.com
+DOMAIN-SUFFIX, posthog.com
+DOMAIN-SUFFIX, mixpanel.com
+DOMAIN-SUFFIX, amplitude.com
+DOMAIN-SUFFIX, plausible.io
+DOMAIN-SUFFIX, matomo.cloud
+DOMAIN-SUFFIX, onedollarstats.com
+DOMAIN-SUFFIX, datafa.st
+DOMAIN-SUFFIX, sprig.com

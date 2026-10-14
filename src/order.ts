@@ -7,8 +7,11 @@ const APPLE_IP = "apple-relay 等需代理域名解析到 17.x，IP 规则前置
 const DNS_TAIL = "LAN 与 ASN 规则会触发本地 DNS 解析，须沉底";
 const APPLE_GLOBAL = "Global 含 apple.com、icloud.com 后缀，Apple 直连规则集后置会被送进 🚀 Proxy";
 
-// 须是第一个 RULE-SET：[规则, 原因]
-export const FIRST_RULE_SET: [string, string] = ["WeChat.list", "微信对出口策略敏感，须先于所有规则集匹配"];
+// 打头的 RULE-SET，须按此顺序排在最前：[规则, 原因]
+export const LEADING_RULE_SETS: [string, string][] = [
+  ["Guard.list", "拦截先于一切分流，追踪域名不能先被其他规则集命中而放行"],
+  ["WeChat.list", "微信对出口策略敏感，须先于拦截以外的所有规则集匹配"],
+];
 
 // 兜底规则集：所有策略不是 DIRECT 的 RULE-SET 都须在它之前，否则被它收走送进 🚀 Proxy。
 // 直连规则集不受此限；须先于兜底匹配的直连规则集（Apple 直连类）在 ORDER 里单独约束
@@ -64,9 +67,11 @@ export function checkOrder(conf: string, order = ORDER): string[] {
     const [a, b] = [pos(first), pos(then)];
     if (a >= 0 && b >= 0 && a > b) problems.add(`${first} 须在 ${then} 之前：${why}`);
   }
-  const [lead, leadWhy] = FIRST_RULE_SET;
-  const firstSet = all.find((r) => r.type === "RULE-SET")?.id;
-  if (pos(lead) >= 0 && firstSet !== lead) problems.add(`${lead} 须是第一个 RULE-SET（现在是 ${firstSet}）：${leadWhy}`);
+  const sets = all.filter((r) => r.type === "RULE-SET").map((r) => r.id);
+  LEADING_RULE_SETS.filter(([id]) => pos(id) >= 0).forEach(([id, why], i) => {
+    const nth = i === 0 ? "第一个" : `第 ${i + 1} 个`;
+    if (sets[i] !== id) problems.add(`${id} 须是${nth} RULE-SET（现在是 ${sets[i]}）：${why}`);
+  });
   const [catchAll, catchAllWhy] = CATCH_ALL;
   const c = pos(catchAll);
   if (c >= 0) {
