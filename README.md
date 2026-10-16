@@ -8,7 +8,7 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/Yixuling/surge-rulekit/ci.yml?style=flat-square&label=CI)](https://github.com/Yixuling/surge-rulekit/actions)
 [![Surge](https://img.shields.io/badge/Surge-macOS%20%7C%20iOS-0a84ff?style=flat-square)](https://nssurge.com)
 
-<img src="icons/Apple.png" width="36" alt="Apple"> <img src="icons/AI.png" width="36" alt="AI"> <img src="icons/ArcDia.png" width="36" alt="Arc & Dia"> <img src="icons/DeepL.png" width="36" alt="DeepL"> <img src="icons/Disney.png" width="36" alt="Disney+"> <img src="icons/GitHub.png" width="36" alt="GitHub"> <img src="icons/Google.png" width="36" alt="Google"> <img src="icons/JetBrains.png" width="36" alt="JetBrains"> <img src="icons/Netflix.png" width="36" alt="Netflix"> <img src="icons/PayPal.png" width="36" alt="PayPal"> <img src="icons/Twitter.png" width="36" alt="X"> <img src="icons/Telegram.png" width="36" alt="Telegram"> <img src="icons/Speedtest.png" width="36" alt="Speedtest"> <img src="icons/WeChat.png" width="36" alt="WeChat"> <img src="icons/YouTube.png" width="36" alt="YouTube">
+<img src="icons/AdsPower.png" width="36" alt="AdsPower"> <img src="icons/Apple.png" width="36" alt="Apple"> <img src="icons/AI.png" width="36" alt="AI"> <img src="icons/ArcDia.png" width="36" alt="Arc & Dia"> <img src="icons/DeepL.png" width="36" alt="DeepL"> <img src="icons/Disney.png" width="36" alt="Disney+"> <img src="icons/GitHub.png" width="36" alt="GitHub"> <img src="icons/Google.png" width="36" alt="Google"> <img src="icons/JetBrains.png" width="36" alt="JetBrains"> <img src="icons/Netflix.png" width="36" alt="Netflix"> <img src="icons/PayPal.png" width="36" alt="PayPal"> <img src="icons/Twitter.png" width="36" alt="X"> <img src="icons/Telegram.png" width="36" alt="Telegram"> <img src="icons/Speedtest.png" width="36" alt="Speedtest"> <img src="icons/WeChat.png" width="36" alt="WeChat"> <img src="icons/YouTube.png" width="36" alt="YouTube">
 
 [下载现成配置](#下载现成配置) • [引用规则集与图标](#直接引用规则集与图标) • [规则集](#规则集) • [路由架构](#路由架构) • [自己维护](#自己维护)
 
@@ -99,7 +99,7 @@ flowchart LR
 
 每家机场的每个地区（香港、新加坡、美国、日本、台湾）各有一个 Smart 组，直接按节点名正则筛选并智能选路；同地区两家机场再由 fallback 做主备切换。两家机场没有混进同一个 Smart 组：实测两家的延迟档位差得多，混编后选路反而不稳。
 
-15 个服务分流组（Apple、AI、Google、Netflix 等）各自独立选择出口：代理、直连、任一地区或具体节点。
+16 个服务分流组（Apple、AI、Google、Netflix 等）各自独立选择出口：代理、直连、任一地区或具体节点。
 
 ## 图标
 

@@ -12,7 +12,7 @@
 #   pngcolor             深色含细节/无单色源 → 从彩色 PNG 取形状染单色
 #   grad_svg             线条/抽象          → simple-icons path 填渐变 + alpha 加粗
 #   outline              纯黑且须保黑白气质 → 白填充 + 深色描边（浅色勾边、深色白实心）
-#   自定义函数           无合适品牌源       → 内嵌 SVG（见 icon_AI / icon_Apple / icon_Telegram）
+#   自定义函数           无合适品牌源       → 内嵌 SVG（见 icon_AI / icon_AdsPower / icon_Apple / icon_Telegram）
 #
 # 新增图标三步：
 #   1. 选上面一种方法（或写 icon_<Name> 自定义函数）
@@ -62,7 +62,7 @@ DB="https://raw.githubusercontent.com/homarr-labs/dashboard-icons/adca944175c9a3
 SH="https://cdn.jsdelivr.net/gh/selfhst/icons@2053b70b283ffed5f2cc1424d1e17d9c554a846d/png"              # selfh.st：彩色 PNG
 WM="https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg"                             # Wikimedia 无法按版本取，靠 sha256 锁定
 
-ALL=(Apple AI ArcDia DeepL Disney GitHub Google JetBrains Netflix PayPal
+ALL=(AdsPower Apple AI ArcDia DeepL Disney GitHub Google JetBrains Netflix PayPal
      Twitter Telegram Speedtest WeChat YouTube)
 
 b="$(mktemp -d)"; trap 'rm -rf "$b"' EXIT; cd "$b"
@@ -115,6 +115,18 @@ outline()   { fetch "$2" _s.svg && svg2fit _s.svg "$5" || return 1
   canvas _fit.png "$1"; }
 
 # ---------- 自定义图标 ----------
+# AdsPower：官网只有 64px 位图 favicon、图标库未收录，按 App 图标复刻（蓝底圆角方块 + 三块半透明白色平行四边形叠成 X）
+icon_AdsPower() { cat > _ap.svg <<'SVG'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#1E4DFF"/>
+  <g fill="#FFFFFF">
+    <path fill-opacity="0.8"  d="M118 82 L256 185 L256 322 L118 222 Z"/>
+    <path fill-opacity="0.6"  d="M390 82 L390 222 L118 428 L118 290 Z"/>
+    <path fill-opacity="0.45" d="M290 205 L400 292 L400 428 L290 345 Z"/>
+  </g>
+</svg>
+SVG
+  svg2fit _ap.svg $FILL_BOX && canvas _fit.png AdsPower; }
 # Apple：双色蓝苹果（上浅下深直接相接），纯黑官方标的双主题化
 icon_Apple() { fetch "$SI/apple.svg" _a.svg && rsvg-convert -h $FILL_ROUND _a.svg -o _aw.png || return 1
   local W H mid; W=$(magick _aw.png -format '%w' info:) && H=$(magick _aw.png -format '%h' info:) || return 1
@@ -157,6 +169,7 @@ SVG
 
 # ---------- 配方表（新图标在此加一行）----------
 build_one() { case "$1" in
+  AdsPower)  icon_AdsPower ;;   # 实心圆角方块（见函数注释）
   Apple)     icon_Apple ;;
   AI)        icon_AI ;;
   ArcDia)    grad_svg  ArcDia    arc $((FILL_ROUND-6)) '#FF7A4D' '#D6418F' 3 ;;   # +dilate3*2 ≈ ROUND
