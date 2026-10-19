@@ -62,3 +62,8 @@ DOMAIN, ppl-ai-file-upload.s3.amazonaws.com
 
 # ===== OpenRouter =====
 DOMAIN-SUFFIX, openrouter.ai
+
+# ===== Cursor =====
+# API、Agent、遥测与登录鉴权（api2/api3/api5/gcpp/metrics 等均在 cursor.sh 下，api.cursor.com 与账号页在 cursor.com）；扩展市场 cursorapi.com 与更新包 cursor-cdn.com 留在通用代理，避免大流量占用专线
+DOMAIN-SUFFIX, cursor.sh
+DOMAIN-SUFFIX, cursor.com
