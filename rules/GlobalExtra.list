@@ -138,3 +138,13 @@ DOMAIN-SUFFIX, producthunt.com
 
 # ===== CodePen =====
 DOMAIN-SUFFIX, codepen.io
+
+# ===== Statsig =====
+DOMAIN-SUFFIX, statsigapi.net
+DOMAIN-SUFFIX, featureassets.org
+
+# ===== Sentry =====
+DOMAIN-SUFFIX, sentry.io
+
+# ===== Datadog =====
+DOMAIN-SUFFIX, browser-intake-datadoghq.com
