@@ -33,6 +33,7 @@ surge-cli 实测行为（官方文档没写）：`test-policy` 对订阅节点�
 - **广告追踪拦截**：只启用自维护的 `rules/Guard.list`（本机实测的纯追踪，收录标准见 `.claude/skills/rule-audit`）；上游 Advertising/Privacy/Hijacking 只注释保留作参考，不启用（大列表挤占 iOS 网络扩展内存、隐私列表误拦多，网页广告另有 AdGuard）。带跳转、风控、表单功能的追踪不收，拦了会坏功能
 - **always-real-ip**：不可加 `*.apple.com` 这类宽条目，否则需代理的 Apple 域名会变成裸 IP 连接，被 `17.0.0.0/8` 抢成直连
 - **extended-matching**：需代理的规则集带这个参数，直连规则集不带
+- **all-hybrid 与 wifi-assist**：开 all-hybrid 时 wifi-assist 须关（手册：前者取代后者的被动切换），由 `src/tests/template.test.ts` 检查
 - **不跨机场合并 Smart 组**：把两家机场合进同一个 Smart 组的方案已经实测否决，两家机场质量档位差太多（数据见 NOTES）。除非格局变化，不要重提
 - **两层路由**：每家机场每个地区一个 Smart 组（直接用正则筛节点），再由 fallback 做跨机场主备。手选节点走服务组里的 `📡 Subscription`
 - **rules/ 格式**：三行头部（名称 / 说明 / 来源）加 `# ===== 分组 =====`；条目写成 `DOMAIN-SUFFIX, example.com`。`AppleIntelligence.list` 以 Apple 官方 101555 文档为准
@@ -41,7 +42,7 @@ surge-cli 实测行为（官方文档没写）：`test-policy` 对订阅节点�
 ## 代码与风格
 
 - 源码：`src/template.ts` 渲染与产物头部、`src/conf.ts` 配置读取（分段与规则行，检查器与规范化都经它读，不各自解析）、`src/order.ts` 顺序约束、`src/references.ts` 策略引用检查、`src/public.ts` 公开配置转换、`src/normalize.ts` 规范化与漂移判断、`src/private.ts` 私有层与扫描清单、`src/cli/` 命令入口、`src/tests/` 测试
-- 模板等号按块（空行分隔）对齐，emoji 与中文按 2 列宽计；行内参数列（如 `icon-url`）也对齐
+- 模板等号按块（空行分隔）对齐，由 `src/tests/template.test.ts` 检查；行内参数列（如 `icon-url`）也对齐，这一项靠人工
 - `scripts/` 运行在 macOS 自带 bash 3.2：变量后紧跟中文写 `${var}`，不用关联数组
 - 提交信息遵循 Conventional Commits，subject 用中文
 
