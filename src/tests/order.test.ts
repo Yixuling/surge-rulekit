@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { CATCH_ALL, checkOrder, ORDER, ruleIds } from "../order";
+import { CATCH_ALL, checkOrder, ORDER } from "../order";
 
 const ORDERED = [
   "Guard.list", "WeChat.list", "AppleIntelligence.list", "AppleExtra.list", "AppStore.list", "AppleDirect.list", "iCloud.list", "AppleDev.list", "TestFlight.list",
@@ -12,10 +12,6 @@ const line = (id: string) =>
   : id.includes("/") ? `IP-CIDR, ${id}, DIRECT, no-resolve`
   : `RULE-SET, https://x/y/${id}, ${DIRECT.has(id) ? "DIRECT" : "P"}`;
 const conf = (ids: string[]) => `[General]\na = 1\n[Rule]\n# 注释\n${ids.map(line).join("\n")}\nFINAL, F, dns-failed\n[MITM]\nh2 = true\n`;
-
-test("ruleIds 取文件名、内置名、匹配值", () => {
-  expect(ruleIds(conf(["AI.list", "LAN", "17.0.0.0/8"]))).toEqual(["AI.list", "LAN", "17.0.0.0/8", "FINAL"]);
-});
 
 test("合规顺序无违反", () => {
   expect(checkOrder(conf(ORDERED))).toEqual([]);

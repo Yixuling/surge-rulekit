@@ -1,6 +1,6 @@
 // [Rule] 顺序约束：Surge 自上而下匹配，打乱以下顺序，流量会被前面的规则抢走。
-// 规则以 id 指代：RULE-SET 取 URL 文件名（AI.list）或内置名（LAN），其余取匹配值（17.0.0.0/8）。
-import { splitFields } from "./normalize";
+// 规则以规则 id 指代（见 GLOSSARY.md）：AI.list、LAN、17.0.0.0/8。
+import { rules } from "./conf";
 
 const APPLE_DIRECT = "gateway.icloud.com 在 iCloud.list 的 icloud.com 后缀之内，后置会被抢成直连";
 const APPLE_IP = "apple-relay 等需代理域名解析到 17.x，IP 规则前置会把它们抢成直连";
@@ -34,24 +34,6 @@ export const ORDER: [string, string, string][] = [
   ["China_All_No_Resolve.list", "LAN", DNS_TAIL],
   ["LAN", "ASN.China.list", DNS_TAIL],
 ];
-
-type Rule = { type: string; id: string; policy: string };
-
-// [Rule] 段每条规则
-function rules(conf: string): Rule[] {
-  const section = conf.split(/^\[Rule\]$/m)[1]?.split(/^\[/m)[0] ?? "";
-  return section
-    .split("\n")
-    .map((l) => l.trim())
-    .filter((l) => l && !l.startsWith("#"))
-    .map((l) => {
-      const [type = "", value = "", policy = ""] = splitFields(l);
-      if (type === "FINAL") return { type, id: "FINAL", policy: value };
-      return { type, id: type === "RULE-SET" ? value.slice(value.lastIndexOf("/") + 1) : value, policy };
-    });
-}
-
-export const ruleIds = (conf: string): string[] => rules(conf).map((r) => r.id);
 
 // 返回违反项；约束涉及的规则须恰好出现一次，否则无从检查，会静默通过
 export function checkOrder(conf: string, order = ORDER): string[] {

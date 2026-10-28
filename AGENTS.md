@@ -40,7 +40,7 @@ surge-cli 实测行为（官方文档没写）：`test-policy` 对订阅节点�
 
 ## 代码与风格
 
-- 源码：`src/template.ts` 渲染与产物头部、`src/order.ts` 顺序约束、`src/references.ts` 策略引用检查、`src/public.ts` 公开配置转换、`src/normalize.ts` 规范化与漂移判断、`src/private.ts` 私有层与扫描清单、`src/cli/` 命令入口、`src/tests/` 测试
+- 源码：`src/template.ts` 渲染与产物头部、`src/conf.ts` 配置读取（分段与规则行，检查器与规范化都经它读，不各自解析）、`src/order.ts` 顺序约束、`src/references.ts` 策略引用检查、`src/public.ts` 公开配置转换、`src/normalize.ts` 规范化与漂移判断、`src/private.ts` 私有层与扫描清单、`src/cli/` 命令入口、`src/tests/` 测试
 - 模板等号按块（空行分隔）对齐，emoji 与中文按 2 列宽计；行内参数列（如 `icon-url`）也对齐
 - `scripts/` 运行在 macOS 自带 bash 3.2：变量后紧跟中文写 `${var}`，不用关联数组
 - 提交信息遵循 Conventional Commits，subject 用中文

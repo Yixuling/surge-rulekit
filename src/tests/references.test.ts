@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { checkReferences, rulePolicy } from "../references";
+import { checkReferences } from "../references";
 
 const BASE = `[General]
 loglevel = notify
@@ -27,13 +27,6 @@ FINAL, 🚀 Proxy, dns-failed
 [MITM]
 h2 = true
 `;
-
-test("rulePolicy 取 FINAL、逻辑规则与普通规则的策略名", () => {
-  expect(rulePolicy("FINAL, 🟢 Final, dns-failed")).toBe("🟢 Final");
-  expect(rulePolicy("AND, ((DOMAIN, a.com), (DEST-PORT, 443)), 🚀 Proxy, no-resolve")).toBe("🚀 Proxy");
-  expect(rulePolicy('RULE-SET, https://x/A.list, "Arc & Dia", extended-matching')).toBe("Arc & Dia");
-  expect(rulePolicy("RULE-SET, https://x/A.list")).toBeUndefined();
-});
 
 test("引用都已定义时无违反", () => {
   expect(checkReferences(BASE)).toEqual([]);

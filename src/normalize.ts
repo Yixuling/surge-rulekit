@@ -1,20 +1,13 @@
 // 配置规范化，用于 deploy 的漂移比较：抹掉 Surge UI 保存时的格式改写
 // （删注释与空段、改空白与引号、挪动 key=value 参数），保留规则与成员的先后顺序。
-
-// 按逗号切分（引号内不切），去掉首尾空白与包裹的引号
-export function splitFields(text: string): string[] {
-  return (text.match(/("[^"]*"|[^,])+/g) ?? []).map((f) => f.trim().replace(/^"(.*)"$/, "$1").trim());
-}
-
-// 策略组行里 key = value 形式的参数（区别于成员）
-export const isParam = (f: string) => /^[a-z0-9-]+\s*=/i.test(f);
+import { isParam, sections, splitFields } from "./conf";
 
 function normalizeLine(section: string, line: string): string {
   const eq = line.indexOf("=");
-  if (section === "[Rule]" || eq < 0) return splitFields(line).join(",");
+  if (section === "Rule" || eq < 0) return splitFields(line).join(",");
   const key = line.slice(0, eq).trim();
   const fields = splitFields(line.slice(eq + 1));
-  if (section !== "[Proxy]" && section !== "[Proxy Group]") return `${key}=${fields.join(",")}`;
+  if (section !== "Proxy" && section !== "Proxy Group") return `${key}=${fields.join(",")}`;
   // 策略组：成员保序，参数按键排序，参数值里的列表统一逗号格式
   const params = fields
     .filter(isParam)
@@ -31,21 +24,12 @@ export function driftReference(current: string, baseline: string | undefined, re
 }
 
 export function normalize(conf: string): string {
-  const out: string[] = [];
-  let section = "";
-  let lines: string[] = [];
-  const flush = () => {
+  const out = sections(conf).flatMap(([name, lines]) => {
+    const normalized = lines.map((line) => normalizeLine(name, line));
     // [General] 与 [MITM] 键唯一、顺序无意义
-    if (lines.length) out.push(section, ...(["[General]", "[MITM]"].includes(section) ? lines.sort() : lines));
-  };
-  for (const raw of conf.split("\n")) {
-    const line = raw.trim();
-    if (!line || (line.startsWith("#") && !line.startsWith("#!"))) continue; // #! 是 Surge 指令
-    if (/^\[.+\]$/.test(line)) {
-      flush();
-      [section, lines] = [line, []];
-    } else lines.push(normalizeLine(section, line));
-  }
-  flush();
+    if (["General", "MITM"].includes(name)) normalized.sort();
+    // 空段不参与比较（UI 保存时会删掉空段）
+    return name && !lines.length ? [] : [name && `[${name}]`, ...normalized];
+  });
   return out.join("\n") + "\n";
 }
