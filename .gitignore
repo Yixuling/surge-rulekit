@@ -15,3 +15,6 @@
 
 # 会话交接笔记（本地使用，含个人待办）
 /HANDOFF.md
+
+# Matt 技能的本地 spec 与 ticket（可能引用私有上下文）
+/.scratch/
