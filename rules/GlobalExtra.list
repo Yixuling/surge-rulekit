@@ -70,6 +70,23 @@ DOMAIN-SUFFIX, wins.cool
 # ===== Mole =====
 DOMAIN-SUFFIX, mole.fit
 
+# ===== Home Assistant =====
+DOMAIN-SUFFIX, home-assistant.io
+DOMAIN-SUFFIX, nabucasa.com
+DOMAIN-SUFFIX, hacs.xyz
+DOMAIN-SUFFIX, openhomefoundation.org
+
+# ===== Downie / Permute =====
+DOMAIN-SUFFIX, charliemonroe.net
+DOMAIN-SUFFIX, downiestatistics.com
+
+# ===== PopClip =====
+DOMAIN-SUFFIX, pilotmoon.com
+DOMAIN-SUFFIX, popclip.app
+
+# ===== Proxyman =====
+DOMAIN-SUFFIX, proxyman.com
+
 # ===== Cursor =====
 DOMAIN-SUFFIX, open-vsx.org
 
@@ -94,6 +111,12 @@ DOMAIN-SUFFIX, astral.sh
 # ===== chezmoi =====
 DOMAIN-SUFFIX, chezmoi.io
 
+# ===== rtk =====
+DOMAIN-SUFFIX, rtk-ai.app
+
+# ===== pnpm =====
+DOMAIN-SUFFIX, pnpm.io
+
 # ===== Gradle =====
 DOMAIN-SUFFIX, gradle.org
 
@@ -111,6 +134,15 @@ DOMAIN-SUFFIX, liquibase.com
 
 # ===== Sonatype =====
 DOMAIN-SUFFIX, sonatype.com
+
+# ===== springdoc =====
+DOMAIN-SUFFIX, springdoc.org
+
+# ===== ArchUnit =====
+DOMAIN-SUFFIX, archunit.org
+
+# ===== JSpecify =====
+DOMAIN-SUFFIX, jspecify.dev
 
 # ===== Ant Design =====
 DOMAIN-SUFFIX, ant.design
@@ -130,6 +162,31 @@ DOMAIN-SUFFIX, jsr.io
 # ===== Playwright =====
 DOMAIN-SUFFIX, playwright.dev
 
+# ===== React =====
+DOMAIN-SUFFIX, react.dev
+
+# ===== Vite =====
+DOMAIN-SUFFIX, vite.dev
+
+# ===== Vitest =====
+DOMAIN-SUFFIX, vitest.dev
+
+# ===== ESLint =====
+DOMAIN-SUFFIX, eslint.org
+DOMAIN-SUFFIX, typescript-eslint.io
+
+# ===== Tailwind CSS =====
+DOMAIN-SUFFIX, tailwindcss.com
+
+# ===== Astro =====
+DOMAIN-SUFFIX, astro.build
+
+# ===== Iconify =====
+DOMAIN-SUFFIX, iconify.design
+
+# ===== Simple Icons =====
+DOMAIN-SUFFIX, simpleicons.org
+
 # ===== Supabase =====
 DOMAIN-SUFFIX, supabase.co
 
@@ -148,3 +205,4 @@ DOMAIN-SUFFIX, sentry.io
 
 # ===== Datadog =====
 DOMAIN-SUFFIX, browser-intake-datadoghq.com
+DOMAIN-SUFFIX, datadoghq-browser-agent.com

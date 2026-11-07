@@ -7,6 +7,33 @@ DOMAIN-SUFFIX, adsrvr.org
 DOMAIN-SUFFIX, taboola.com
 DOMAIN-SUFFIX, impactradius-event.com
 DOMAIN-SUFFIX, liadm.com
+DOMAIN-SUFFIX, adnxs.com
+DOMAIN-SUFFIX, adform.net
+DOMAIN-SUFFIX, 3lift.com
+DOMAIN-SUFFIX, casalemedia.com
+DOMAIN-SUFFIX, criteo.com
+DOMAIN-SUFFIX, rubiconproject.com
+DOMAIN-SUFFIX, pubmatic.com
+DOMAIN-SUFFIX, 360yield.com
+DOMAIN-SUFFIX, deepintent.com
+DOMAIN-SUFFIX, stackadapt.com
+DOMAIN-SUFFIX, sitescout.com
+DOMAIN-SUFFIX, tremorhub.com
+DOMAIN-SUFFIX, flashtalking.com
+DOMAIN-SUFFIX, smartnews-ads.com
+DOMAIN-SUFFIX, inmobi.com
+DOMAIN-SUFFIX, turn.com
+DOMAIN-SUFFIX, media6degrees.com
+
+# ===== Cookie 同步与人群数据 =====
+DOMAIN-SUFFIX, mathtag.com
+DOMAIN-SUFFIX, rlcdn.com
+DOMAIN-SUFFIX, pippio.com
+DOMAIN-SUFFIX, crwdcntrl.net
+DOMAIN-SUFFIX, agkn.com
+DOMAIN-SUFFIX, tapad.com
+DOMAIN-SUFFIX, quantserve.com
+DOMAIN-SUFFIX, mookie1.com
 
 # ===== 营销自动化与访客识别 =====
 DOMAIN-SUFFIX, hs-analytics.net
@@ -15,6 +42,7 @@ DOMAIN-SUFFIX, hs-scripts.com
 DOMAIN-SUFFIX, hsadspixel.net
 DOMAIN-SUFFIX, mktoresp.com
 DOMAIN-SUFFIX, demandbase.com
+DOMAIN-SUFFIX, company-target.com
 DOMAIN-SUFFIX, zi-scripts.com
 DOMAIN-SUFFIX, unifyintent.com
 DOMAIN-SUFFIX, calibermind.com
@@ -30,3 +58,9 @@ DOMAIN-SUFFIX, matomo.cloud
 DOMAIN-SUFFIX, onedollarstats.com
 DOMAIN-SUFFIX, datafa.st
 DOMAIN-SUFFIX, sprig.com
+DOMAIN-SUFFIX, segment.com
+DOMAIN-SUFFIX, histats.com
+DOMAIN-SUFFIX, umami.is
+DOMAIN-SUFFIX, lrkt-in.com
+DOMAIN-SUFFIX, logr-ingest.com
+DOMAIN-SUFFIX, go-mpulse.net
