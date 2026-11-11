@@ -1,5 +1,5 @@
 # 广告与追踪拦截规则
-# 说明：作者本机实测、确认为纯追踪的域名（只上报行为，拦了不影响功能）；带跳转、风控、表单功能的追踪不收。可单独启用，与上游 Advertising/Privacy 列表互不依赖、允许重复
+# 说明：作者本机实测、确认为纯追踪的域名（只上报行为，拦了不影响功能）；带跳转、风控、表单功能的追踪不收；例外是 App 的代理检测上报，拦它正是为了让 App 在开着代理时可用。可单独启用，与上游 Advertising/Privacy 列表互不依赖、允许重复
 # 来源：自维护
 
 # ===== 广告投放 =====
@@ -64,3 +64,7 @@ DOMAIN-SUFFIX, umami.is
 DOMAIN-SUFFIX, lrkt-in.com
 DOMAIN-SUFFIX, logr-ingest.com
 DOMAIN-SUFFIX, go-mpulse.net
+
+# ===== 代理检测上报 =====
+# 农业银行 App：上报代理/越狱等环境，命中后弹窗强制退出
+DOMAIN-SUFFIX, msmp.abchina.com.cn
