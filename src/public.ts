@@ -17,7 +17,7 @@ const lines = (text: string, keep: (line: string) => boolean): string => text.sp
 
 // 三份共用：去掉只对作者有意义的部分（专线、Tailscale、HTTP API、MITM 证书、私有规则与 skip-proxy 追加项）
 function common(t: string): string {
-  t = sub(t, /^# 只访问 tailnet.*\n🔗 Tailnet .*\n\n# 在 Surge 策略编辑器里登录.*\n\[Tailscale tailnet\]\n.*\n/m, "");
+  t = sub(t, /^# 接入 tailnet.*\n🔗 Tailnet .*\n\n# 在 Surge 策略编辑器里登录.*\n(?:#.*\n)*\[Tailscale tailnet\]\n(?:.+\n)+/m, "");
   t = sub(t, /^🎯 Direct  =/m, "🎯 Direct =");
   t = sub(t, /^⛔️ Reject  =/m, "⛔️ Reject =");
   t = sub(t, "；末尾为私有追加条目（反代理检测的银行 App 等，见 values.env）", "");
