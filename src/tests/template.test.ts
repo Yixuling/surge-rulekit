@@ -30,11 +30,14 @@ test("parseEnv 取第一个 = 之后的全部内容，拒绝重复与非法键",
   expect(() => parseEnv("a=1")).toThrow("格式错误");
 });
 
-test("扫描清单只含 SECRET_*、deny.txt 与片段里的域名", () => {
+test("扫描清单只含 SECRET_*、deny.txt 与片段里的域名（script-path 的文件名不算）", () => {
   const deny = denyStrings(
-    layer({ SECRET_URL: "https://s.example/x", HTTP_API_KEY: "surge" }, { r: "# a.example.com\nDOMAIN, p.example.org, DIRECT" }, ["abc"]),
+    layer({ SECRET_URL: "https://s.example/x", HTTP_API_KEY: "surge" }, {
+      r: "# a.example.com\nDOMAIN, p.example.org, DIRECT",
+      s: 'x = type=dns, script-path=doh-alias.js, argument="target=q.example.net"',
+    }, ["abc"]),
   );
-  expect(deny.sort()).toEqual(["abc", "https://s.example/x", "p.example.org"]);
+  expect(deny.sort()).toEqual(["abc", "https://s.example/x", "p.example.org", "q.example.net"]);
 });
 
 // CI 只有示例私有层：保证模板与示例同步，且顺序约束成立

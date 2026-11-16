@@ -43,8 +43,10 @@ export function loadPrivate(dir: string): PrivateLayer {
   return { vars: parseEnv(readFileSync(envPath, "utf8")), snippets, deny };
 }
 
-// 片段里的非注释行按定义都是私有内容，从中取出域名作为扫描串
+// 片段里的非注释行按定义都是私有内容，从中取出域名作为扫描串。
+// script-path 的值是公开的脚本地址（raw.githubusercontent.com 或文件名 doh-alias.js），形似域名，先剔除以免误报
 const HOSTNAME = /\b(?:[a-z0-9-]+\.)+[a-z]{2,}\b/gi;
+const SCRIPT_PATH = /script-path\s*=\s*[^,\s]+/gi;
 
 // 提交扫描清单：SECRET_* 的值、deny.txt，加上片段中出现的域名。
 // 其他变量（如短标识、公开图标 URL）不进清单，否则会在公开文件里大量误报。
@@ -56,7 +58,7 @@ export function denyStrings(layer: PrivateLayer): string[] {
   for (const text of layer.snippets.values()) {
     for (const line of text.split("\n")) {
       if (line.trim().startsWith("#")) continue;
-      for (const m of line.matchAll(HOSTNAME)) out.add(m[0]);
+      for (const m of line.replace(SCRIPT_PATH, "").matchAll(HOSTNAME)) out.add(m[0]);
     }
   }
   return [...out];

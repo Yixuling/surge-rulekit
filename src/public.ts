@@ -15,7 +15,7 @@ function sub(text: string, from: string | RegExp, to: string): string {
 
 const lines = (text: string, keep: (line: string) => boolean): string => text.split("\n").filter(keep).join("\n");
 
-// 三份共用：去掉只对作者有意义的部分（专线、Tailscale、HTTP API、MITM 证书、私有规则与 skip-proxy 追加项）
+// 三份共用：去掉只对作者有意义的部分（专线、Tailscale、HTTP API、MITM 证书、私有规则、私有 Host 映射与脚本、 skip-proxy 追加项）
 function common(t: string): string {
   t = sub(t, /\n\n^# 私有节点.*\n\{\{> private-proxies\}\}\n/m, "");
   t = sub(t, /^# 接入 tailnet.*\n🔗 Tailnet .*\n\n# 在 Surge 策略编辑器里登录.*\n(?:#.*\n)*\[Tailscale tailnet\]\n(?:.+\n)+/m, "");
@@ -25,6 +25,8 @@ function common(t: string): string {
   t = sub(t, ", {{SKIP_PROXY_EXTRA}}", "");
   t = lines(t, (l) => !/^(# HTTP API|http-api|ca-passphrase|ca-p12)/.test(l));
   t = sub(t, "{{> private-rules}}\n\n", "");
+  t = sub(t, "[Host]\n{{> private-hosts}}\n", "[Host]\n");
+  t = sub(t, "[Script]\n{{> private-scripts}}\n", "[Script]\n");
   t = sub(t, / \/ 专线/, "");
   t = sub(t, /"🚄 Static", /g, "");
   t = sub(t, /\^\(\?!\.\*\{\{SECRET_STATIC_KEYWORD\}\}\)\.\*/g, "");

@@ -124,6 +124,7 @@ Surge-*.conf          公开配置（由模板生成，可直接下载）
 private.example/      私有层示例（复制为 private/ 后填值）
 rules/                自维护规则集
 icons/                策略组图标（由脚本生成）
+surge-scripts/        Surge 脚本（经 raw URL 引用）
 src/                  渲染、公开配置转换、顺序约束、策略引用检查、规范化与私有层读取
 src/cli/              render、deploy、scan、audit 命令入口
 src/tests/            单元测试

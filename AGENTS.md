@@ -10,6 +10,7 @@ Surge 个人配置与规则库。用法见 README（面向使用者）与 `docs/
 - deploy 因漂移停下，说明 UI 或 iOS 上改过配置：先把要保留的部分回填进模板，再用 `--force`
 - 新增模板变量时，同步在 `private.example/` 里加示例值，否则 CI 失败。改过 `private/` 后执行 `bun run private:backup`（需要 `op` 已登录）
 - `rules/`、`icons/` 通过 raw URL 引用：推送后 Surge 按外部资源的 `update-interval`（默认 86400 秒）自动刷新，最多滞后 24 小时；要立即生效执行 `surge-cli external-resource update all`
+- `surge-scripts/` 放 Surge 执行的 JS 脚本，同样经 raw URL 引用（`script-update-interval` 默认 86400 秒）。脚本不含私有值，私有参数经 `argument` 写在 `private/snippets/`。新增或改名脚本要先推送再 deploy，否则 Surge 下载 404；改了脚本要立即生效执行 `surge-cli reload`
 - `icons/*.png` 由 `bun run icons` 生成，勿手工出图。重建逐字节可复现，`git status` 里出现的图标就是像素真的变了；换来源或升级版本后要核对图标 diff
 - surge-cli 不在 PATH：`/Applications/Surge.app/Contents/Applications/surge-cli`
 

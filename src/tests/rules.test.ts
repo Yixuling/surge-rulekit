@@ -1,8 +1,8 @@
-// rules/ 的格式约定（见 AGENTS.md）与模板对本仓库文件的引用
+// rules/ 的格式约定（见 AGENTS.md）与模板对本仓库文件（rules/、icons/、surge-scripts/）的引用
 import { expect, test } from "bun:test";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { ROOT } from "../template";
+import { build, ROOT } from "../template";
 
 const RULES = join(ROOT, "rules");
 const files = readdirSync(RULES).filter((f) => f.endsWith(".list")).sort();
@@ -66,4 +66,11 @@ test("模板引用的本仓库 rules/ 与 icons/ 文件都存在，rules/ 里没
   for (const ref of new Set(refs)) expect(existsSync(join(ROOT, ref)), `模板引用的 ${ref} 不存在`).toBe(true);
   const referenced = new Set(refs.filter((r) => r.startsWith("rules/")).map((r) => r.slice("rules/".length)));
   for (const f of files) expect(referenced.has(f), `rules/${f} 没有被模板引用`).toBe(true);
+});
+
+test("示例私有层经 raw URL 引用的 surge-scripts/ 脚本都存在", () => {
+  const conf = build(join(ROOT, "private.example"));
+  const refs = [...conf.matchAll(/script-path\s*=\s*\S*surge-rulekit\/refs\/heads\/main\/(surge-scripts\/[^,\s]+)/g)].map((m) => m[1]!);
+  expect(refs.length).toBeGreaterThan(0);
+  for (const ref of refs) expect(existsSync(join(ROOT, ref)), `${ref} 不存在`).toBe(true);
 });
