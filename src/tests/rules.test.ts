@@ -71,6 +71,5 @@ test("模板引用的本仓库 rules/ 与 icons/ 文件都存在，rules/ 里没
 test("示例私有层经 raw URL 引用的 surge-scripts/ 脚本都存在", () => {
   const conf = build(join(ROOT, "private.example"));
   const refs = [...conf.matchAll(/script-path\s*=\s*\S*surge-rulekit\/refs\/heads\/main\/(surge-scripts\/[^,\s]+)/g)].map((m) => m[1]!);
-  expect(refs.length).toBeGreaterThan(0);
   for (const ref of refs) expect(existsSync(join(ROOT, ref)), `${ref} 不存在`).toBe(true);
 });

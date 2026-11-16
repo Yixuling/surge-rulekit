@@ -44,7 +44,7 @@ export function loadPrivate(dir: string): PrivateLayer {
 }
 
 // 片段里的非注释行按定义都是私有内容，从中取出域名作为扫描串。
-// script-path 的值是公开的脚本地址（raw.githubusercontent.com 或文件名 doh-alias.js），形似域名，先剔除以免误报
+// script-path 的值是公开的脚本地址（raw.githubusercontent.com 或 .js 文件名），形似域名，先剔除以免误报
 const HOSTNAME = /\b(?:[a-z0-9-]+\.)+[a-z]{2,}\b/gi;
 const SCRIPT_PATH = /script-path\s*=\s*[^,\s]+/gi;
 
