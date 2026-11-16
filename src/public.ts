@@ -15,7 +15,7 @@ function sub(text: string, from: string | RegExp, to: string): string {
 
 const lines = (text: string, keep: (line: string) => boolean): string => text.split("\n").filter(keep).join("\n");
 
-// 三份共用：去掉只对作者有意义的部分（专线、Tailscale、HTTP API、MITM 证书、私有规则、私有 Host 映射与脚本、 skip-proxy 追加项）
+// 三份共用：去掉只对作者有意义的部分（专线、Tailscale、HTTP API、MITM 证书、私有规则、私有 Host 映射与脚本、 skip-proxy 追加项；机场私有 DoH 换回阿里 DoH）
 function common(t: string): string {
   t = sub(t, /\n\n^# 私有节点.*\n\{\{> private-proxies\}\}\n/m, "");
   t = sub(t, /^# 接入 tailnet.*\n🔗 Tailnet .*\n\n# 在 Surge 策略编辑器里登录.*\n(?:#.*\n)*\[Tailscale tailnet\]\n(?:.+\n)+/m, "");
@@ -23,6 +23,11 @@ function common(t: string): string {
   t = sub(t, /^⛔️ Reject  =/m, "⛔️ Reject =");
   t = sub(t, "；末尾为私有追加条目（反代理检测的银行 App 等，见 values.env）", "");
   t = sub(t, ", {{SKIP_PROXY_EXTRA}}", "");
+  t = sub(
+    t,
+    /^# 用主力机场的私有 DoH.*\nencrypted-dns-server( +)= \{\{SECRET_DOH_SERVERS\}\}$/m,
+    "# 只用阿里：实测 doh.pub 向权威 DNS 转发 ECS（本机宽带 /24 网段），阿里不转发；用 IP 地址免去引导解析\nencrypted-dns-server$1= https://223.5.5.5/dns-query, https://223.6.6.6/dns-query",
+  );
   t = lines(t, (l) => !/^(# HTTP API|http-api|ca-passphrase|ca-p12)/.test(l));
   t = sub(t, "{{> private-rules}}\n\n", "");
   t = sub(t, "[Host]\n{{> private-hosts}}\n", "[Host]\n");
